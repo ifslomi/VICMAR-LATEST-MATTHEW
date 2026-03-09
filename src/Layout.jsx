@@ -1,14 +1,53 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import { createPageUrl } from "./utils";
-import { Menu, X, Phone, Mail, MapPin, Facebook, Instagram, Youtube, ChevronDown } from "lucide-react";
+import { Menu, X, Phone, Mail, MapPin, Facebook, Instagram, Youtube, ChevronDown, HelpCircle, ChevronUp, ChevronDown as ChevronDownIcon } from "lucide-react";
 import vicmarLogo from "@/images/logos/transparent-vicmar-logo.png";
 import vicmarLogoFooter from "@/images/logos/vicmar-logo-footer.png";
-import bgFooter from "@/images/bg-footer.png";
+
+const FAQ_ITEMS = [
+  {
+    question: "What payment methods are available?",
+    answer: "We offer flexible payment options including bank financing, Pag-IBIG financing, in-house financing, and spot cash payments with discounts. Our sales team can help you find the best payment plan that suits your budget."
+  },
+  {
+    question: "What amenities are included in the community?",
+    answer: "Vicmar Homes features communal greenways with food gardens, vermicompost areas, playgrounds, and open spaces. Each home includes garden space for food and herb production, with options for vertical gardens, aquaponics, and rainwater tanks."
+  },
+  {
+    question: "How does the purchase process work?",
+    answer: "The process starts with a site visit and property selection. After choosing your home, you'll complete the reservation with a minimal fee, submit requirements for financing, and upon approval, sign the contract to sell. Our team guides you through every step."
+  },
+  {
+    question: "Are there maintenance fees?",
+    answer: "Yes, there are association dues for the upkeep of common areas including the greenways, communal gardens, and shared facilities. These fees ensure the sustainable features of the community are properly maintained for all residents."
+  },
+];
 
 export default function Layout({ children, currentPageName }) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const isHomePage = currentPageName === "Home";
+  const [showScrollTop, setShowScrollTop] = useState(false);
+  const [faqOpen, setFaqOpen] = useState(false);
+  const [openFaqIdx, setOpenFaqIdx] = useState(null);
+  const faqPanelRef = useRef(null);
+
+  useEffect(() => {
+    const onScroll = () => setShowScrollTop(window.scrollY > 300);
+    window.addEventListener("scroll", onScroll);
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      if (faqPanelRef.current && !faqPanelRef.current.contains(e.target)) {
+        setFaqOpen(false);
+      }
+    };
+    if (faqOpen) document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, [faqOpen]);
+
+  const scrollToTop = () => window.scrollTo({ top: 0, behavior: "smooth" });
 
   const navLinks = [
     { name: "Home", page: "Home" },
@@ -24,7 +63,6 @@ export default function Layout({ children, currentPageName }) {
     { name: "Our Sustainable Community", to: createPageUrl("AboutUs") + "#sustainable-community" },
     { name: "Sustainable Living Features", to: createPageUrl("AboutUs") + "#sustainable-living" },
     { name: "Customizable Home Gardens", to: createPageUrl("AboutUs") + "#home-gardens" },
-    { name: "Get In Touch", to: createPageUrl("AboutUs") + "#contact" },
   ];
 
   const amenitiesDropdownLinks = [
@@ -164,10 +202,10 @@ export default function Layout({ children, currentPageName }) {
       {/* Main Navbar */}
       <nav className="bg-white shadow-md sticky top-0 z-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-20">
+          <div className="flex justify-between items-center h-24">
             {/* Logo */}
-            <Link to={createPageUrl("Home")} className="flex items-center">
-              <img src={vicmarLogo} alt="Vicmar Homes" className="h-14 w-auto" />
+            <Link to={createPageUrl("Home")} className="flex items-center overflow-visible">
+              <img src={vicmarLogo} alt="Vicmar Homes" className="h-16 w-auto object-contain" />
             </Link>
 
             {/* Desktop Navigation */}
@@ -230,7 +268,7 @@ export default function Layout({ children, currentPageName }) {
                 FIND PROPERTY
               </Link>
               <Link
-                to={createPageUrl("AboutUs") + "?contact=true"}
+                to={createPageUrl("ContactUs")}
                 className="find-property-btn bg-[#22c55e] hover:bg-[#16a34a] text-white px-6 py-2.5 rounded-full text-sm font-semibold"
               >
                 CONTACT US
@@ -273,7 +311,7 @@ export default function Layout({ children, currentPageName }) {
                 FIND PROPERTY
               </Link>
               <Link
-                to={createPageUrl("AboutUs") + "?contact=true"}
+                to={createPageUrl("ContactUs")}
                 onClick={() => setMobileMenuOpen(false)}
                 className="find-property-btn block bg-[#22c55e] hover:bg-[#16a34a] text-white px-4 py-3 rounded-md text-sm font-semibold text-center mt-4"
               >
@@ -288,52 +326,49 @@ export default function Layout({ children, currentPageName }) {
       <main className="flex-1">{children}</main>
 
       {/* Footer */}
-      <footer className={`relative text-white${isHomePage ? " snap-section" : ""}`}>
-        {/* Background image */}
-        <div className="absolute inset-0">
-          <img src={bgFooter} alt="" className="w-full h-full object-cover" />
-          <div className="absolute inset-0 bg-[#0a3620]/95" />
-        </div>
+      <footer className="relative text-white bg-[#166534]">
         {/* Top accent line */}
-        <div className="relative h-1 bg-gradient-to-r from-[#0f4c2d] via-[#15803d] to-[#0f4c2d]" />
+        <div className="h-1 bg-gradient-to-r from-[#166534] via-[#22c55e] to-[#166534]" />
 
         {/* Call to Action Section */}
-        <div className="relative border-b border-white/10">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 text-center">
-            <p className="text-xs tracking-[0.3em] uppercase text-[#4ade80] mb-4 font-sans font-medium">
-              LET'S TALK
+        <div className="border-b border-white/10 bg-[#145a2e]">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14 text-center">
+            <p className="text-xs font-semibold uppercase tracking-widest text-[#86efac] mb-3">
+              Let's Talk
             </p>
-            <h2 className="text-3xl md:text-4xl font-light text-white mb-4">
-              Ready to Find Your <span className="italic">Dream Home</span>?
+            <h2 className="text-3xl md:text-4xl font-bold text-white mb-3">
+              Ready to Find Your Dream Home?
             </h2>
-            <p className="text-green-200/70 text-base mb-8 font-light font-sans">
+            <p className="text-white/60 text-base mb-8">
               Contact our team and let us help you find the perfect property
             </p>
             <Link
-              to={createPageUrl("AboutUs") + "?contact=true"}
-              className="inline-block bg-[#15803d] hover:bg-[#116b33] text-white px-8 py-3 text-sm font-semibold tracking-widest uppercase transition-colors"
+              to={createPageUrl("ContactUs")}
+              className="inline-block bg-[#22c55e] hover:bg-[#16a34a] text-white px-8 py-3 rounded-full text-sm font-semibold transition-colors"
             >
-              CONTACT US TODAY
+              Contact Us Today
             </Link>
           </div>
         </div>
 
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-12">
+        {/* Main Footer Content */}
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-10">
+
             {/* Logo & About */}
             <div className="md:col-span-1">
-              <img src={vicmarLogoFooter} alt="Vicmar Homes" className="h-12 w-auto" />
-              <p className="mt-6 text-green-200/70 text-sm leading-relaxed font-light">
+              <img src={vicmarLogoFooter} alt="Vicmar Homes" className="h-14 w-auto" />
+              <p className="mt-4 text-white/60 text-sm leading-relaxed">
                 Your trusted partner in finding the perfect home. Quality living starts with Vicmar Homes.
               </p>
-              <div className="flex items-center gap-4 mt-6">
-                <a href="#" className="w-10 h-10 rounded-full border border-white/20 flex items-center justify-center text-green-200/70 hover:text-white hover:border-[#15803d] hover:bg-[#15803d]/20 transition-all duration-300">
+              <div className="flex items-center gap-3 mt-6">
+                <a href="#" className="w-9 h-9 rounded-full bg-white/10 hover:bg-[#22c55e] flex items-center justify-center transition-colors">
                   <Facebook className="w-4 h-4" />
                 </a>
-                <a href="#" className="w-10 h-10 rounded-full border border-white/20 flex items-center justify-center text-green-200/70 hover:text-white hover:border-[#15803d] hover:bg-[#15803d]/20 transition-all duration-300">
+                <a href="#" className="w-9 h-9 rounded-full bg-white/10 hover:bg-[#22c55e] flex items-center justify-center transition-colors">
                   <Instagram className="w-4 h-4" />
                 </a>
-                <a href="#" className="w-10 h-10 rounded-full border border-white/20 flex items-center justify-center text-green-200/70 hover:text-white hover:border-[#15803d] hover:bg-[#15803d]/20 transition-all duration-300">
+                <a href="#" className="w-9 h-9 rounded-full bg-white/10 hover:bg-[#22c55e] flex items-center justify-center transition-colors">
                   <Youtube className="w-4 h-4" />
                 </a>
               </div>
@@ -341,13 +376,13 @@ export default function Layout({ children, currentPageName }) {
 
             {/* Quick Links */}
             <div>
-              <h4 className="font-semibold text-base mb-6 tracking-wider uppercase text-white/90 font-sans">Quick Links</h4>
+              <h4 className="font-bold text-sm uppercase tracking-wider text-white mb-5">Quick Links</h4>
               <ul className="space-y-3">
                 {navLinks.map((link) => (
                   <li key={link.page}>
                     <Link
                       to={createPageUrl(link.page)}
-                      className="text-green-200/60 hover:text-[#4ade80] transition-colors text-sm font-light"
+                      className="text-white/60 hover:text-[#86efac] transition-colors text-sm"
                     >
                       {link.name}
                     </Link>
@@ -358,50 +393,177 @@ export default function Layout({ children, currentPageName }) {
 
             {/* Contact */}
             <div>
-              <h4 className="font-semibold text-base mb-6 tracking-wider uppercase text-white/90 font-sans">Contact Us</h4>
+              <h4 className="font-bold text-sm uppercase tracking-wider text-white mb-5">Contact Us</h4>
               <ul className="space-y-4 text-sm">
                 <li className="flex items-start gap-3">
-                  <MapPin className="w-4 h-4 text-[#4ade80] flex-shrink-0 mt-1" />
-                  <span className="text-green-200/60 font-light">San Jose Sico, Batangas City</span>
+                  <MapPin className="w-4 h-4 text-[#86efac] flex-shrink-0 mt-0.5" />
+                  <span className="text-white/60">San Jose Sico, Batangas City</span>
                 </li>
                 <li className="flex items-center gap-3">
-                  <Phone className="w-4 h-4 text-[#4ade80] flex-shrink-0" />
-                  <span className="text-green-200/60 font-light">(043) 233-2050</span>
+                  <Phone className="w-4 h-4 text-[#86efac] flex-shrink-0" />
+                  <a href="tel:+63432332050" className="text-white/60 hover:text-white transition-colors">(043) 233-2050</a>
                 </li>
                 <li className="flex items-center gap-3">
-                  <Mail className="w-4 h-4 text-[#4ade80] flex-shrink-0" />
-                  <span className="text-green-200/60 font-light">info@vicmarhomes.com</span>
+                  <Mail className="w-4 h-4 text-[#86efac] flex-shrink-0" />
+                  <a href="mailto:info@vicmarhomes.com" className="text-white/60 hover:text-white transition-colors">info@vicmarhomes.com</a>
                 </li>
               </ul>
             </div>
 
             {/* Newsletter */}
             <div>
-              <h4 className="font-semibold text-base mb-6 tracking-wider uppercase text-white/90 font-sans">Stay Updated</h4>
-              <p className="text-green-200/60 text-sm mb-4 font-light">Subscribe for the latest property updates.</p>
-              <div className="flex">
+              <h4 className="font-bold text-sm uppercase tracking-wider text-white mb-5">Stay Updated</h4>
+              <p className="text-white/60 text-sm mb-4">Subscribe for the latest property updates.</p>
+              <div className="flex border border-white/20 rounded-full">
                 <input
                   type="email"
                   placeholder="Your email"
-                  className="flex-1 px-4 py-3 bg-white/5 border border-white/10 text-white placeholder-green-200/40 text-sm focus:outline-none focus:border-[#15803d] transition-colors"
+                  className="flex-1 min-w-0 px-4 py-2.5 bg-white/10 text-white placeholder-white/40 text-sm focus:outline-none rounded-l-full"
                 />
-                <button className="px-5 py-3 bg-[#15803d] hover:bg-[#116b33] text-sm font-semibold tracking-wider uppercase transition-colors">
-                  Go
+                <button className="px-5 py-2.5 bg-[#22c55e] hover:bg-[#16a34a] text-sm font-semibold transition-colors whitespace-nowrap rounded-r-full">
+                  Subscribe
                 </button>
               </div>
             </div>
           </div>
 
-          <div className="border-t border-white/10 mt-16 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
-            <p className="text-green-200/40 text-xs tracking-wider font-light">
+          {/* Bottom Bar */}
+          <div className="border-t border-white/10 mt-14 pt-8 flex flex-col md:flex-row justify-between items-center gap-3">
+            <p className="text-white/40 text-xs">
               &copy; {new Date().getFullYear()} Vicmar Homes. All rights reserved.
             </p>
-            <p className="text-green-200/40 text-xs tracking-wider font-light">
+            <p className="text-white/40 text-xs">
               Sustainable Living in Batangas City
             </p>
           </div>
         </div>
       </footer>
+
+      {/* ── Floating Buttons ── */}
+      <style>{`
+        @keyframes slideInRight {
+          from { opacity: 0; transform: translateX(80px) scale(0.8); }
+          to   { opacity: 1; transform: translateX(0)   scale(1); }
+        }
+        @keyframes slideInUp {
+          from { opacity: 0; transform: translateY(20px) scale(0.95); }
+          to   { opacity: 1; transform: translateY(0)   scale(1); }
+        }
+        @keyframes faqPanelIn {
+          from { opacity: 0; transform: translateY(24px) scale(0.97); }
+          to   { opacity: 1; transform: translateY(0)   scale(1); }
+        }
+        @keyframes fadeIn {
+          from { opacity: 0; }
+          to   { opacity: 1; }
+        }
+        .float-btn {
+          transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        .float-btn:hover {
+          transform: translateY(-3px) scale(1.08);
+          box-shadow: 0 12px 28px rgba(22,101,52,0.35);
+        }
+        .float-btn:active {
+          transform: scale(0.95);
+        }
+        .faq-item-answer {
+          overflow: hidden;
+          transition: max-height 0.35s ease, opacity 0.3s ease;
+        }
+      `}</style>
+
+      {/* FAQ floating panel */}
+      {faqOpen && (
+        <div
+          className="fixed inset-0 z-[60] pointer-events-none"
+          style={{ animation: "fadeIn 0.2s ease" }}
+        >
+          <div
+            ref={faqPanelRef}
+            className="pointer-events-auto absolute bottom-28 right-6 w-[340px] sm:w-[400px] bg-white rounded-2xl shadow-2xl border border-gray-100 overflow-hidden"
+            style={{ animation: "faqPanelIn 0.3s cubic-bezier(0.34,1.56,0.64,1)" }}
+          >
+            {/* Panel header */}
+            <div className="bg-[#166534] px-5 py-4 flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <HelpCircle className="w-5 h-5 text-[#22c55e]" />
+                <span className="text-white font-bold text-base tracking-wide">FAQ</span>
+              </div>
+              <button
+                onClick={() => setFaqOpen(false)}
+                className="text-white/60 hover:text-white transition-colors p-1 rounded-full hover:bg-white/10"
+              >
+                <X className="w-4 h-4" />
+              </button>
+            </div>
+            {/* FAQ accordion */}
+            <div className="divide-y divide-gray-100 max-h-[420px] overflow-y-auto">
+              {FAQ_ITEMS.map((item, idx) => (
+                <div key={idx} className="px-5">
+                  <button
+                    className="w-full text-left py-4 flex items-center justify-between gap-3 group"
+                    onClick={() => setOpenFaqIdx(openFaqIdx === idx ? null : idx)}
+                  >
+                    <span className="text-sm font-semibold text-[#166534] group-hover:text-[#22c55e] transition-colors leading-snug">
+                      {item.question}
+                    </span>
+                    <span
+                      className="flex-shrink-0 transition-transform duration-300"
+                      style={{ transform: openFaqIdx === idx ? "rotate(180deg)" : "rotate(0deg)" }}
+                    >
+                      <ChevronDownIcon className="w-4 h-4 text-[#166534]" />
+                    </span>
+                  </button>
+                  <div
+                    className="faq-item-answer"
+                    style={{
+                      maxHeight: openFaqIdx === idx ? "200px" : "0px",
+                      opacity: openFaqIdx === idx ? 1 : 0,
+                    }}
+                  >
+                    <p className="text-sm text-gray-600 leading-relaxed pb-4">{item.answer}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+            {/* Footer hint */}
+            <div className="bg-gray-50 px-5 py-3 border-t border-gray-100">
+              <p className="text-xs text-gray-400 text-center">Still have questions? <Link to={createPageUrl("ContactUs")} onClick={() => setFaqOpen(false)} className="text-[#166534] font-semibold hover:underline">Contact us</Link></p>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Bottom-right floating stack */}
+      <div className="fixed bottom-6 right-6 z-50 flex flex-col items-center gap-3">
+        {/* Scroll to top */}
+        <button
+          onClick={scrollToTop}
+          aria-label="Scroll to top"
+          className="float-btn w-12 h-12 rounded-full bg-white border-2 border-[#166534] text-[#166534] flex items-center justify-center shadow-lg"
+          style={{
+            animation: showScrollTop ? "slideInRight 0.35s cubic-bezier(0.34,1.56,0.64,1) both" : undefined,
+            opacity: showScrollTop ? 1 : 0,
+            pointerEvents: showScrollTop ? "auto" : "none",
+            transition: "opacity 0.25s ease",
+          }}
+        >
+          <ChevronUp className="w-5 h-5" />
+        </button>
+
+        {/* FAQ button */}
+        <button
+          onClick={() => { setFaqOpen((v) => !v); setOpenFaqIdx(null); }}
+          aria-label="Toggle FAQ"
+          className={`float-btn w-14 h-14 rounded-full flex items-center justify-center shadow-xl text-white ${
+            faqOpen ? "bg-[#16a34a]" : "bg-[#166534]"
+          }`}
+          style={{ animation: "slideInRight 0.4s cubic-bezier(0.34,1.56,0.64,1) both" }}
+        >
+          <HelpCircle className="w-7 h-7" />
+        </button>
+      </div>
     </div>
   );
 }

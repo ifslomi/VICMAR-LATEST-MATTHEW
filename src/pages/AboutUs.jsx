@@ -1,146 +1,140 @@
-import React, { useState, useEffect } from "react";
-import { base44 } from "@/api/base44Client";
-import { useMutation } from "@tanstack/react-query";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import { 
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "@/components/ui/accordion";
-import { toast } from "sonner";
-import { 
-  Phone, Mail, MapPin, Clock, Award, Users, 
-  Building, Target, Heart, Shield, CheckCircle, Leaf, Droplets, Sun, HelpCircle
-} from "lucide-react";
+import React, { useEffect } from "react";
+import { Award, Users, Building, Leaf, CheckCircle, Droplets, Zap } from "lucide-react";
 import MissionPhilosophySection from "@/components/about/MissionPhilosophySection";
 import CoreValuesSection from "@/components/about/CoreValuesSection";
-
-const faqItems = [
-  {
-    question: "What payment methods are available?",
-    answer: "We offer flexible payment options including bank financing, Pag-IBIG financing, in-house financing, and spot cash payments with discounts. Our sales team can help you find the best payment plan that suits your budget."
-  },
-  {
-    question: "What amenities are included in the community?",
-    answer: "Vicmar Homes features communal greenways with food gardens, vermicompost areas, playgrounds, and open spaces. Each home includes garden space for food and herb production, with options for vertical gardens, aquaponics, and rainwater tanks."
-  },
-  {
-    question: "How does the purchase process work?",
-    answer: "The process starts with a site visit and property selection. After choosing your home, you'll complete reservation with a minimal fee, submit requirements for financing, and upon approval, sign the contract to sell. Our team guides you through every step."
-  },
-  {
-    question: "Are there maintenance fees?",
-    answer: "Yes, there are association dues for the upkeep of common areas including the greenways, communal gardens, and shared facilities. These fees ensure the sustainable features of the community are properly maintained for all residents."
-  },
-];
+import { useScrollReveal } from "@/hooks/useScrollReveal";
 
 const stats = [
-  { value: "500+", label: "Happy Families", icon: Users },
-  { value: "10+", label: "Years Experience", icon: Award },
-  { value: "15+", label: "Projects Completed", icon: Building },
+  { value: "500+", label: "Happy Families",     icon: Users },
+  { value: "10+",  label: "Years Experience",   icon: Award },
+  { value: "15+",  label: "Projects Completed", icon: Building },
   { value: "100%", label: "Sustainable Design", icon: Leaf },
 ];
 
-const values = [
+const communityPillars = [
   {
     icon: Leaf,
-    title: "Environmentally Conscious",
-    description: "Reduced concrete footprint, porous sidewalks, and rain water seepage systems to replenish ground water and preserve natural resources."
+    title: "Greenways & Food Gardens",
+    body: "Parks become productive 'greenways' irrigated by gray water. Vermicompost bins turn organic waste into fertiliser for backyard herb and vegetable gardens.",
   },
   {
-    icon: Heart,
-    title: "Health Conscious",
-    description: "Backyard vermiculture, medicinal herb gardens, and organic food production reduce living costs and promote healthier lifestyles."
+    icon: Droplets,
+    title: "Water Conservation",
+    body: "Rainwater tanks irrigate gardens while porous sidewalks replenish the local water table — reducing runoff and preserving natural resources.",
   },
   {
-    icon: Target,
-    title: "Financially Conscious",
-    description: "Gardens for food & herbs, reduced energy requirements, and sustainable features lower household expenditures for homeowners."
+    icon: Zap,
+    title: "Energy-Efficient Design",
+    body: "Natural cross-ventilation and high windows keep homes comfortable with minimal electricity — no expensive cooling systems needed.",
   },
 ];
 
+const sustainableFeatures = [
+  "Home garden space for food & herb production",
+  "Gray water irrigation for shared greenways",
+  "Rainwater tanks for garden irrigation",
+  "Porous sidewalks for groundwater replenishment",
+  "Natural ventilation with high windows",
+  "Vertical gardens, aquaponics & more",
+];
+
+const gardenOptions = [
+  { label: "Vertical Herbal Gardens", desc: "Space-saving herb production" },
+  { label: "Aquaponics Tanks",        desc: "Fish & vegetable cultivation" },
+  { label: "Chicken or Rabbit Cages", desc: "Backyard livestock options" },
+  { label: "Vegetable Patches",       desc: "Traditional garden plots" },
+];
+
+function RevealSection({ children, className = "", delay = 0 }) {
+  const ref = useScrollReveal({ threshold: 0.12, triggerOnce: true });
+  return (
+    <div
+      ref={ref}
+      className={`scroll-reveal-init ${className}`}
+      style={delay ? { transitionDelay: `${delay}ms` } : undefined}
+    >
+      {children}
+    </div>
+  );
+}
+
 export default function AboutUs() {
-  const urlParams = new URLSearchParams(window.location.search);
-  const showContactInitially = urlParams.get("contact") === "true";
-
-  const [contactForm, setContactForm] = useState({
-    name: "",
-    email: "",
-    phone: "",
-    inquiryType: "",
-    message: "",
-  });
-
-  const createInquiry = useMutation({
-    mutationFn: (data) => base44.entities.Inquiry.create(data),
-    onSuccess: () => {
-      toast.success("Message sent successfully! We'll contact you soon.");
-      setContactForm({ name: "", email: "", phone: "", inquiryType: "", message: "" });
-    },
-  });
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    createInquiry.mutate(contactForm);
-  };
-
   useEffect(() => {
-    // Handle hash navigation from URL
-    const hash = window.location.hash.replace('#', '');
+    const hash = window.location.hash.replace("#", "");
     if (hash) {
-      // Small delay to ensure content is rendered
       setTimeout(() => {
-        const element = document.getElementById(hash);
-        if (element) {
-          element.scrollIntoView({ behavior: "smooth", block: "start" });
-        }
-      }, 100);
-    } else if (showContactInitially) {
-      setTimeout(() => {
-        document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" });
+        document.getElementById(hash)?.scrollIntoView({ behavior: "smooth", block: "start" });
       }, 100);
     }
-  }, [showContactInitially]);
+  }, []);
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      {/* Header */}
-      <div 
-        className="relative py-24 px-4"
+    <div className="min-h-screen bg-gray-50 overflow-x-hidden">
+      <style>{`
+        .scroll-reveal-init {
+          opacity: 0;
+          transform: translateY(28px);
+          transition: opacity 0.65s ease, transform 0.65s ease;
+        }
+        .scroll-reveal-init.revealed {
+          opacity: 1;
+          transform: translateY(0);
+        }
+        .stat-card {
+          transition: transform 0.25s ease, box-shadow 0.25s ease;
+        }
+        .stat-card:hover {
+          transform: translateY(-5px);
+          box-shadow: 0 16px 36px rgba(22,101,52,0.13);
+        }
+        .pillar-card {
+          transition: transform 0.25s ease, box-shadow 0.25s ease;
+        }
+        .pillar-card:hover {
+          transform: translateY(-4px);
+          box-shadow: 0 14px 30px rgba(22,101,52,0.10);
+        }
+        .garden-card {
+          transition: transform 0.25s ease, box-shadow 0.25s ease;
+        }
+        .garden-card:hover {
+          transform: translateY(-4px);
+          box-shadow: 0 12px 24px rgba(22,101,52,0.10);
+        }
+        .feature-pill {
+          transition: background 0.2s ease;
+        }
+        .feature-pill:hover {
+          background: rgba(255,255,255,0.18);
+        }
+      `}</style>
+
+      {/* Hero */}
+      <div
+        className="relative py-28 px-4"
         style={{
           backgroundImage: `url('https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=1920&q=80')`,
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
+          backgroundSize: "cover",
+          backgroundPosition: "center",
         }}
       >
         <div className="absolute inset-0 bg-[#166534]/85" />
         <div className="relative max-w-7xl mx-auto text-center">
-          <h1 className="text-4xl md:text-5xl font-bold text-white mb-4">
-            About Vicmar Homes
-          </h1>
+          <p className="text-[#86efac] text-xs font-semibold uppercase tracking-widest mb-3">Our Story</p>
+          <h1 className="text-4xl md:text-5xl font-bold text-white mb-4">About Vicmar Homes</h1>
           <p className="text-gray-300 text-lg max-w-2xl mx-auto">
-            An integrated and sustainable concept for affordable housing in Batangas City
+            Building sustainable, affordable communities rooted in Filipino values — in Batangas City.
           </p>
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-        {/* Stats */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-6 -mt-24 relative z-10 mb-20">
+      {/* Stats */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-6 -mt-16 relative z-10">
           {stats.map((stat, idx) => {
             const Icon = stat.icon;
             return (
-              <div key={idx} className="bg-white rounded-xl p-6 text-center shadow-lg">
+              <div key={idx} className="stat-card bg-white rounded-xl p-6 text-center shadow-lg">
                 <Icon className="w-8 h-8 text-[#22c55e] mx-auto mb-3" />
                 <p className="text-3xl font-bold text-[#166534]">{stat.value}</p>
                 <p className="text-gray-500 text-sm">{stat.label}</p>
@@ -150,276 +144,110 @@ export default function AboutUs() {
         </div>
       </div>
 
-      {/* Mission and Philosophy Section */}
+      {/* Mission & Philosophy */}
       <MissionPhilosophySection />
 
-      {/* Core Values Section */}
+      {/* Core Values */}
       <CoreValuesSection />
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-        {/* Our Story */}
-        <div id="vision" className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center mb-20 scroll-mt-24">
-          <div>
-            <h2 className="text-3xl font-bold text-[#166534] mb-6">Our Vision</h2>
-            <div className="space-y-4 text-gray-600 leading-relaxed">
-              <p>
-                Each home is provided enough home garden space to allow for food & herb production. The design using mostly the single attached model, or duplex model, provides savings on the shared wall construction, while allowing for a more spacious community.
-              </p>
-              <p>
-                This also allows for a reduced concrete footprint over the entire land to allow for rain water seepage for the replenishment of the ground water, while also allowing more of the garden to be reached by the sun.
-              </p>
-              <p>
-                The village is designed to allow for common parks and playgrounds to be used for "food gardens." This is done by distributing its parks and playgrounds into garden 'greenways' behind each home, such that it also serves as social interaction spaces for kids and adults.
-              </p>
+      {/* Our Vision */}
+      <section id="vision" className="scroll-mt-24 py-20">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <RevealSection>
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-14 items-center">
+              <div>
+                <p className="text-[#22c55e] text-xs font-semibold uppercase tracking-widest mb-3">How We Design</p>
+                <h2 className="text-3xl font-bold text-[#166534] mb-6">Our Vision</h2>
+                <p className="text-gray-600 leading-relaxed">
+                  Each home is designed with dedicated garden space, a shared-wall duplex layout for affordability, and a reduced concrete footprint that lets rainwater replenish the groundwater. Parks are placed as productive green 'greenways' behind homes — spaces for food, community, and everyday life.
+                </p>
+              </div>
+              <div className="grid grid-cols-2 gap-4">
+                {[
+                  "photo-1600607687939-ce8a6c25118c",
+                  "photo-1600566753086-00f18fb6b3ea",
+                ].map((id, i) => (
+                  <img
+                    key={i}
+                    src={`https://images.unsplash.com/${id}?w=500&q=80`}
+                    alt={`Vision ${i + 1}`}
+                    className="rounded-xl h-56 object-cover w-full"
+                  />
+                ))}
+              </div>
             </div>
-          </div>
-          <div className="grid grid-cols-2 gap-4">
-            <img
-              src="https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=500&q=80"
-              alt="About 1"
-              className="rounded-xl h-48 object-cover w-full"
-            />
-            <img
-              src="https://images.unsplash.com/photo-1600566753086-00f18fb6b3ea?w=500&q=80"
-              alt="About 2"
-              className="rounded-xl h-48 object-cover w-full mt-8"
-            />
-            <img
-              src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=500&q=80"
-              alt="About 3"
-              className="rounded-xl h-48 object-cover w-full"
-            />
-            <img
-              src="https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=500&q=80"
-              alt="About 4"
-              className="rounded-xl h-48 object-cover w-full mt-8"
-            />
-          </div>
+          </RevealSection>
         </div>
+      </section>
 
-        {/* Our Values */}
-        <div id="values" className="mb-20 scroll-mt-24">
-          <h2 className="text-3xl font-bold text-[#166534] mb-8 text-center">Our Values</h2>
+      {/* Sustainable Community */}
+      <section id="sustainable-community" className="scroll-mt-24 bg-white py-20">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <RevealSection>
+            <p className="text-[#22c55e] text-xs font-semibold uppercase tracking-widest mb-3 text-center">Living Green</p>
+            <h2 className="text-3xl font-bold text-[#166534] mb-10 text-center">Our Sustainable Community</h2>
+          </RevealSection>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {values.map((value, idx) => {
-              const Icon = value.icon;
+            {communityPillars.map((pillar, idx) => {
+              const Icon = pillar.icon;
               return (
-                <div key={idx} className="bg-white rounded-xl p-8 shadow-sm text-center">
-                  <div className="w-16 h-16 bg-[#22c55e]/10 rounded-full flex items-center justify-center mx-auto mb-6">
-                    <Icon className="w-8 h-8 text-[#22c55e]" />
+                <RevealSection key={idx} delay={idx * 120}>
+                  <div className="pillar-card bg-gray-50 rounded-2xl p-8 h-full border border-gray-100">
+                    <div className="w-14 h-14 bg-[#166534] rounded-xl flex items-center justify-center mb-6">
+                      <Icon className="w-7 h-7 text-white" />
+                    </div>
+                    <h3 className="text-lg font-bold text-[#166534] mb-3">{pillar.title}</h3>
+                    <p className="text-gray-600 text-sm leading-relaxed">{pillar.body}</p>
                   </div>
-                  <h3 className="text-xl font-bold text-[#166534] mb-3">{value.title}</h3>
-                  <p className="text-gray-600">{value.description}</p>
-                </div>
+                </RevealSection>
               );
             })}
           </div>
         </div>
+      </section>
 
-        {/* Community Design */}
-        <div id="sustainable-community" className="mb-20 bg-white rounded-2xl p-8 md:p-12 shadow-sm scroll-mt-24">
-          <h2 className="text-3xl font-bold text-[#166534] mb-8 text-center">Our Sustainable Community</h2>
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-            <div className="space-y-4 text-gray-600 leading-relaxed">
-              <h3 className="text-xl font-bold text-[#166534]">Greenways & Food Gardens</h3>
-              <p>
-                Parks and playgrounds are constantly irrigated by gray water used by each house, thereby continuously irrigating these common areas. These 'greenways' are provided with vermicompost bins, where daily organic trash can be fed to earthworms to produce vermicast - an organic fertilizer for the community's agricultural use.
-              </p>
-              <p>
-                Backyard vermiculture allows organic farming for food and herbs. As some herbs and plants are medicinal in nature, this allows for reduction in medical care costs for homeowners. Not only does the village reduce food costs, medicinal costs and waste production, it also reduces energy requirement for waste management.
-              </p>
-            </div>
-            <div className="space-y-4 text-gray-600 leading-relaxed">
-              <h3 className="text-xl font-bold text-[#166534]">Water Conservation</h3>
-              <p>
-                The village encourages water resource preservation by providing the option for rain water tanks for each home, used for irrigation of farm-garden areas. Sidewalks and catch basins along subdivision roads are designed to be porous, allowing water to seep through the soil to replenish the water table.
-              </p>
-              <h3 className="text-xl font-bold text-[#166534] mt-6">Energy Efficient Design</h3>
-              <p>
-                Houses are designed with reduced energy requirements. Each house is designed such that wind can naturally ventilate efficiently. High windows allow hot air to be released immediately, while also allowing natural sunlight to disinfect homes daily.
-              </p>
-            </div>
-          </div>
-        </div>
-
-        {/* Why Choose Us */}
-        <div id="sustainable-living" className="bg-[#166534] rounded-2xl p-8 md:p-12 mb-20 scroll-mt-24">
-          <h2 className="text-3xl font-bold text-white mb-8 text-center">Sustainable Living Features</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {[
-              "Home garden space for food & herb production",
-              "Gray water irrigation for common greenways",
-              "Vermicompost bins for organic fertilizer",
-              "Rain water tanks for garden irrigation",
-              "Porous sidewalks for ground water replenishment",
-              "Natural ventilation with high windows for hot air release",
-              "Options for vertical gardens & aquaponics",
-              "Car port designed for future growth",
-              "Reduced energy requirements through smart design",
-            ].map((item, idx) => (
-              <div key={idx} className="flex items-center gap-3">
-                <CheckCircle className="w-6 h-6 text-[#22c55e] flex-shrink-0" />
-                <p className="text-white">{item}</p>
-              </div>
+      {/* Sustainable Living Features */}
+      <section id="sustainable-living" className="scroll-mt-24 bg-[#166534] py-20">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <RevealSection>
+            <p className="text-[#86efac] text-xs font-semibold uppercase tracking-widest mb-3 text-center">What's Included</p>
+            <h2 className="text-3xl font-bold text-white mb-14 text-center">Sustainable Living Features</h2>
+          </RevealSection>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            {sustainableFeatures.map((item, idx) => (
+              <RevealSection key={idx} delay={idx * 55}>
+                <div className="feature-pill flex items-start gap-3 bg-white/10 rounded-xl px-5 py-4">
+                  <CheckCircle className="w-5 h-5 text-[#22c55e] flex-shrink-0 mt-0.5" />
+                  <p className="text-white text-sm leading-snug">{item}</p>
+                </div>
+              </RevealSection>
             ))}
           </div>
         </div>
+      </section>
 
-        {/* Model Houses Section */}
-        <div id="home-gardens" className="mb-20 scroll-mt-24">
-          <h2 className="text-3xl font-bold text-[#166534] mb-8 text-center">Customizable Home Gardens</h2>
-          <p className="text-gray-600 text-center max-w-3xl mx-auto mb-8">
-            Model houses are designed to accommodate different variations on how the garden of each home can be. Each household has options to suit their preferences and reduce household expenditures.
-          </p>
+      {/* Home Garden Options */}
+      <section id="home-gardens" className="scroll-mt-24 py-20">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <RevealSection>
+            <p className="text-[#22c55e] text-xs font-semibold uppercase tracking-widest mb-3 text-center">Your Choice</p>
+            <h2 className="text-3xl font-bold text-[#166534] mb-10 text-center">Customisable Home Gardens</h2>
+          </RevealSection>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-            {[
-              { label: "Vertical Herbal Gardens", desc: "Space-saving herb production" },
-              { label: "Aquaponics Tanks", desc: "Fish & vegetable cultivation" },
-              { label: "Chicken or Rabbit Cages", desc: "Backyard livestock options" },
-              { label: "Vegetable Patches", desc: "Traditional garden plots" },
-            ].map((item, idx) => (
-              <div key={idx} className="bg-white rounded-xl p-6 text-center shadow-sm">
-                <div className="w-12 h-12 bg-[#22c55e]/10 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <Leaf className="w-6 h-6 text-[#22c55e]" />
+            {gardenOptions.map((item, idx) => (
+              <RevealSection key={idx} delay={idx * 100}>
+                <div className="garden-card bg-white rounded-2xl p-6 text-center shadow-sm border border-gray-100 h-full">
+                  <div className="w-12 h-12 bg-[#22c55e]/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <Leaf className="w-6 h-6 text-[#22c55e]" />
+                  </div>
+                  <h4 className="font-semibold text-[#166534] mb-2 text-sm">{item.label}</h4>
+                  <p className="text-gray-500 text-xs">{item.desc}</p>
                 </div>
-                <h4 className="font-semibold text-[#166534] mb-2">{item.label}</h4>
-                <p className="text-gray-600 text-sm">{item.desc}</p>
-              </div>
+              </RevealSection>
             ))}
           </div>
         </div>
-
-        {/* Contact Section */}
-        <div id="contact" className="scroll-mt-24">
-          <h2 className="text-3xl font-bold text-[#166534] mb-2 text-center">Get In Touch</h2>
-          <p className="text-gray-600 text-center mb-8">Have questions? We're here to help you find your dream home.</p>
-          
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
-            {/* Contact Form */}
-            <div className="bg-white rounded-xl p-8 shadow-sm">
-              <h3 className="text-xl font-bold text-[#166534] mb-6">Ask a Question</h3>
-              <form onSubmit={handleSubmit} className="space-y-4">
-                <Select
-                  value={contactForm.inquiryType}
-                  onValueChange={(value) => setContactForm({ ...contactForm, inquiryType: value })}
-                >
-                  <SelectTrigger className="w-full">
-                    <SelectValue placeholder="Select inquiry type" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="property-inquiry">Property Inquiry</SelectItem>
-                    <SelectItem value="booking">Site Visit Booking</SelectItem>
-                    <SelectItem value="payment">Payment & Financing</SelectItem>
-                    <SelectItem value="other">Other</SelectItem>
-                  </SelectContent>
-                </Select>
-                <Input
-                  placeholder="Your Name *"
-                  value={contactForm.name}
-                  onChange={(e) => setContactForm({ ...contactForm, name: e.target.value })}
-                  required
-                />
-                <Input
-                  type="tel"
-                  placeholder="Contact Number *"
-                  value={contactForm.phone}
-                  onChange={(e) => setContactForm({ ...contactForm, phone: e.target.value })}
-                  required
-                />
-                <Input
-                  type="email"
-                  placeholder="Email Address *"
-                  value={contactForm.email}
-                  onChange={(e) => setContactForm({ ...contactForm, email: e.target.value })}
-                  required
-                />
-                <Textarea
-                  placeholder="Your Message *"
-                  value={contactForm.message}
-                  onChange={(e) => setContactForm({ ...contactForm, message: e.target.value })}
-                  rows={4}
-                  required
-                />
-                <Button
-                  type="submit"
-                  className="w-full bg-[#22c55e] hover:bg-[#16a34a]"
-                  disabled={createInquiry.isPending}
-                >
-                  {createInquiry.isPending ? "Sending..." : "Send Message"}
-                </Button>
-              </form>
-            </div>
-
-            {/* Contact Info */}
-            <div className="space-y-8">
-              <div className="space-y-6">
-                <div className="flex items-start gap-4">
-                  <div className="w-12 h-12 bg-[#22c55e]/10 rounded-full flex items-center justify-center flex-shrink-0">
-                    <Phone className="w-6 h-6 text-[#22c55e]" />
-                  </div>
-                  <div>
-                    <h4 className="font-semibold text-[#166534] mb-1">Call Us</h4>
-                    <p className="text-gray-600">(043) 233-2050</p>
-                  </div>
-                </div>
-
-                <div className="flex items-start gap-4">
-                  <div className="w-12 h-12 bg-[#22c55e]/10 rounded-full flex items-center justify-center flex-shrink-0">
-                    <MapPin className="w-6 h-6 text-[#22c55e]" />
-                  </div>
-                  <div>
-                    <h4 className="font-semibold text-[#166534] mb-1">Visit Our Office</h4>
-                    <p className="text-gray-600">San Jose Sico, Batangas City</p>
-                  </div>
-                </div>
-
-                <div className="flex items-start gap-4">
-                  <div className="w-12 h-12 bg-[#22c55e]/10 rounded-full flex items-center justify-center flex-shrink-0">
-                    <Mail className="w-6 h-6 text-[#22c55e]" />
-                  </div>
-                  <div>
-                    <h4 className="font-semibold text-[#166534] mb-1">Email Us</h4>
-                    <p className="text-gray-600">info@vicmarhomes.com</p>
-                  </div>
-                </div>
-
-                <div className="flex items-start gap-4">
-                  <div className="w-12 h-12 bg-[#22c55e]/10 rounded-full flex items-center justify-center flex-shrink-0">
-                    <Clock className="w-6 h-6 text-[#22c55e]" />
-                  </div>
-                  <div>
-                    <h4 className="font-semibold text-[#166534] mb-1">Office Hours</h4>
-                    <p className="text-gray-600">Monday - Friday: 9:00 AM - 5:00 PM</p>
-                    <p className="text-gray-600">Saturday: 9:00 AM - 1:00 PM</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* FAQ Section */}
-        <div className="mt-20">
-          <div className="flex items-center justify-center gap-3 mb-8">
-            <HelpCircle className="w-8 h-8 text-[#22c55e]" />
-            <h2 className="text-3xl font-bold text-[#166534]">Frequently Asked Questions</h2>
-          </div>
-          <div className="bg-white rounded-xl p-8 shadow-sm max-w-3xl mx-auto">
-            <Accordion type="single" collapsible className="w-full">
-              {faqItems.map((item, idx) => (
-                <AccordionItem key={idx} value={`item-${idx}`}>
-                  <AccordionTrigger className="text-left text-[#166534] font-semibold hover:no-underline">
-                    {item.question}
-                  </AccordionTrigger>
-                  <AccordionContent className="text-gray-600">
-                    {item.answer}
-                  </AccordionContent>
-                </AccordionItem>
-              ))}
-            </Accordion>
-          </div>
-        </div>
-      </div>
+      </section>
     </div>
   );
 }

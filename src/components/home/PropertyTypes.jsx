@@ -1,44 +1,26 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { createPageUrl } from "../../utils";
-import { Home, Building, Building2, Warehouse, LandPlot, Castle } from "lucide-react";
+import { Home, Building, Building2 } from "lucide-react";
 
 const propertyTypes = [
-  { 
-    type: "single_attached_unit_deluxe", 
-    label: "Single Attached Deluxe", 
-    icon: Castle,
-    description: "Premium spacious homes"
-  },
-  { 
-    type: "single_attached_unit_standard", 
-    label: "Single Attached Standard", 
-    icon: Home,
-    description: "Quality family homes"
-  },
   { 
     type: "duplex", 
     label: "Duplex", 
     icon: Building,
-    description: "Shared wall convenience"
+    description: "Premium duplex homes"
   },
   { 
-    type: "townhouse", 
-    label: "Townhouse", 
+    type: "triplex", 
+    label: "Triplex", 
     icon: Building2,
-    description: "Modern urban living"
+    description: "Affordable triplex units"
   },
   { 
-    type: "bungalow", 
-    label: "Bungalow", 
-    icon: Warehouse,
-    description: "Single-story comfort"
-  },
-  { 
-    type: "lot_only", 
-    label: "Lot Only", 
-    icon: LandPlot,
-    description: "Build your dream"
+    type: "rowhouse", 
+    label: "Rowhouse", 
+    icon: Home,
+    description: "Budget-friendly homes"
   },
 ];
 
@@ -50,7 +32,7 @@ export default function PropertyTypes({ propertyCounts = {} }) {
           Find Your Property
         </h2>
 
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {propertyTypes.map((item) => {
             const Icon = item.icon;
             const count = propertyCounts[item.type] || 0;

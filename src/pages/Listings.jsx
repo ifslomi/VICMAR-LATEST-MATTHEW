@@ -16,7 +16,7 @@ const typeLabels = {
 
 export default function Listings() {
   const urlParams = new URLSearchParams(window.location.search);
-  
+
   const [search, setSearch] = useState("");
   const [propertyType, setPropertyType] = useState(urlParams.get("type") || "all");
   const [status, setStatus] = useState(urlParams.get("status") || "all");
@@ -35,85 +35,58 @@ export default function Listings() {
 
   const filteredProperties = useMemo(() => {
     let filtered = [...properties];
-
-    // Search filter
     if (search) {
-      const searchLower = search.toLowerCase();
-      filtered = filtered.filter(p => 
-        p.title?.toLowerCase().includes(searchLower) ||
-        p.location?.toLowerCase().includes(searchLower) ||
-        p.description?.toLowerCase().includes(searchLower)
+      const s = search.toLowerCase();
+      filtered = filtered.filter(p =>
+        p.title?.toLowerCase().includes(s) ||
+        p.location?.toLowerCase().includes(s) ||
+        p.description?.toLowerCase().includes(s)
       );
     }
-
-    // Type filter
-    if (propertyType !== "all") {
-      filtered = filtered.filter(p => p.property_type === propertyType);
-    }
-
-    // Status filter
-    if (status !== "all") {
-      filtered = filtered.filter(p => p.status === status);
-    }
-
-    // Price filter
-    filtered = filtered.filter(p => 
-      p.price >= priceRange[0] && p.price <= priceRange[1]
-    );
-
-    // Sort
+    if (propertyType !== "all") filtered = filtered.filter(p => p.property_type === propertyType);
+    if (status !== "all") filtered = filtered.filter(p => p.status === status);
+    filtered = filtered.filter(p => p.price >= priceRange[0] && p.price <= priceRange[1]);
     switch (sortBy) {
-      case "price-low":
-        filtered.sort((a, b) => a.price - b.price);
-        break;
-      case "price-high":
-        filtered.sort((a, b) => b.price - a.price);
-        break;
-      case "oldest":
-        filtered.sort((a, b) => new Date(a.created_date) - new Date(b.created_date));
-        break;
-      default:
-        filtered.sort((a, b) => new Date(b.created_date) - new Date(a.created_date));
+      case "price-low":  filtered.sort((a, b) => a.price - b.price); break;
+      case "price-high": filtered.sort((a, b) => b.price - a.price); break;
+      case "oldest":     filtered.sort((a, b) => new Date(a.created_date) - new Date(b.created_date)); break;
+      default:           filtered.sort((a, b) => new Date(b.created_date) - new Date(a.created_date));
     }
-
     return filtered;
   }, [properties, search, propertyType, status, priceRange, sortBy]);
 
-  const formatPrice = (value) => {
-    return new Intl.NumberFormat('en-PH', { 
-      style: 'currency', 
-      currency: 'PHP',
-      maximumFractionDigits: 0 
-    }).format(value);
-  };
+  const formatPrice = (value) =>
+    new Intl.NumberFormat('en-PH', { style: 'currency', currency: 'PHP', maximumFractionDigits: 0 }).format(value);
 
   const clearFilters = () => {
-    setSearch("");
-    setPropertyType("all");
-    setStatus("all");
-    setPriceRange([500000, 5000000]);
-    setSortBy("newest");
+    setSearch(""); setPropertyType("all"); setStatus("all");
+    setPriceRange([500000, 5000000]); setSortBy("newest");
   };
 
   return (
     <div className="min-h-screen bg-gray-50">
+      <style>{`
+        @keyframes cardFadeUp {
+          from { opacity: 0; transform: translateY(20px); }
+          to   { opacity: 1; transform: translateY(0); }
+        }
+        .listing-card { animation: cardFadeUp 0.45s ease both; }
+      `}</style>
+
       {/* Header */}
-      <div className="bg-[#166534] py-16 px-4">
-        <div className="max-w-7xl mx-auto text-center">
-          <h1 className="text-4xl md:text-5xl font-bold text-white mb-4">
-            Property Listings
-          </h1>
-          <p className="text-gray-300 text-lg">
-            Browse all available properties from Vicmar Homes
-          </p>
+      <div className="bg-[#166534] py-20 px-4 relative overflow-hidden">
+        <div className="absolute inset-0 opacity-5" style={{ backgroundImage: 'radial-gradient(circle at 20% 50%, white 1px, transparent 1px), radial-gradient(circle at 80% 20%, white 1px, transparent 1px)', backgroundSize: '40px 40px' }} />
+        <div className="relative max-w-7xl mx-auto text-center page-header">
+          <p className="text-[#86efac] text-xs font-semibold uppercase tracking-widest mb-3">Browse & Discover</p>
+          <h1 className="text-4xl md:text-5xl font-bold text-white mb-4">Property Listings</h1>
+          <p className="text-gray-300 text-lg">Browse all available properties from Vicmar Homes</p>
         </div>
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Search & Filter Bar */}
-        <div className="bg-white rounded-xl shadow-sm p-4 mb-8">
+        <div className="bg-white rounded-xl shadow-sm p-4 mb-8 border border-gray-100">
           <div className="flex flex-col lg:flex-row gap-4 items-center">
-            {/* Search */}
             <div className="relative flex-1 w-full">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
               <Input
@@ -123,11 +96,9 @@ export default function Listings() {
                 className="pl-10"
               />
             </div>
-
-            {/* Quick Filters */}
             <div className="flex flex-wrap gap-3 items-center">
               <Select value={propertyType} onValueChange={setPropertyType}>
-                <SelectTrigger className="w-48">
+                <SelectTrigger className="w-44">
                   <SelectValue placeholder="Property Type" />
                 </SelectTrigger>
                 <SelectContent>
@@ -150,61 +121,34 @@ export default function Listings() {
                 </SelectContent>
               </Select>
 
-              <Button
-                variant="outline"
-                onClick={() => setShowFilters(!showFilters)}
-                className="gap-2"
-              >
+              <Button variant="outline" onClick={() => setShowFilters(!showFilters)} className="gap-2">
                 <SlidersHorizontal className="w-4 h-4" />
                 Filters
               </Button>
 
-              {/* View Toggle */}
               <div className="hidden md:flex border rounded-lg">
-                <Button
-                  variant={viewMode === "grid" ? "default" : "ghost"}
-                  size="icon"
-                  onClick={() => setViewMode("grid")}
-                  className="rounded-r-none"
-                >
+                <Button variant={viewMode === "grid" ? "default" : "ghost"} size="icon" onClick={() => setViewMode("grid")} className="rounded-r-none">
                   <Grid3X3 className="w-4 h-4" />
                 </Button>
-                <Button
-                  variant={viewMode === "list" ? "default" : "ghost"}
-                  size="icon"
-                  onClick={() => setViewMode("list")}
-                  className="rounded-l-none"
-                >
+                <Button variant={viewMode === "list" ? "default" : "ghost"} size="icon" onClick={() => setViewMode("list")} className="rounded-l-none">
                   <List className="w-4 h-4" />
                 </Button>
               </div>
             </div>
           </div>
 
-          {/* Extended Filters */}
           {showFilters && (
             <div className="mt-6 pt-6 border-t grid grid-cols-1 md:grid-cols-3 gap-6">
-              {/* Price Range */}
               <div className="md:col-span-2">
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Price Range: {formatPrice(priceRange[0])} - {formatPrice(priceRange[1])}
+                  Price Range: {formatPrice(priceRange[0])} – {formatPrice(priceRange[1])}
                 </label>
-                <Slider
-                  value={priceRange}
-                  onValueChange={setPriceRange}
-                  min={500000}
-                  max={5000000}
-                  step={100000}
-                />
+                <Slider value={priceRange} onValueChange={setPriceRange} min={500000} max={5000000} step={100000} />
               </div>
-
-              {/* Status */}
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">Status</label>
                 <Select value={status} onValueChange={setStatus}>
-                  <SelectTrigger>
-                    <SelectValue placeholder="Status" />
-                  </SelectTrigger>
+                  <SelectTrigger><SelectValue placeholder="Status" /></SelectTrigger>
                   <SelectContent>
                     <SelectItem value="all">All Status</SelectItem>
                     <SelectItem value="available">Available</SelectItem>
@@ -213,11 +157,9 @@ export default function Listings() {
                   </SelectContent>
                 </Select>
               </div>
-
               <div className="md:col-span-3">
                 <Button variant="outline" onClick={clearFilters} className="gap-2">
-                  <X className="w-4 h-4" />
-                  Clear All Filters
+                  <X className="w-4 h-4" /> Clear All Filters
                 </Button>
               </div>
             </div>
@@ -226,8 +168,8 @@ export default function Listings() {
 
         {/* Results Count */}
         <div className="mb-6">
-          <p className="text-gray-600">
-            Showing <span className="font-semibold text-[#166534]">{filteredProperties.length}</span> properties
+          <p className="text-gray-500 text-sm">
+            Showing <span className="font-semibold text-[#166534]">{filteredProperties.length}</span> {filteredProperties.length === 1 ? 'property' : 'properties'}
           </p>
         </div>
 
@@ -235,20 +177,21 @@ export default function Listings() {
         {isLoading ? (
           <div className={`grid gap-8 ${viewMode === "grid" ? "grid-cols-1 md:grid-cols-2 lg:grid-cols-3" : "grid-cols-1"}`}>
             {[1, 2, 3, 4, 5, 6].map((i) => (
-              <div key={i} className="bg-white rounded-xl h-96 animate-pulse" />
+              <div key={i} className="bg-white rounded-xl h-96 animate-pulse border border-gray-100" />
             ))}
           </div>
         ) : filteredProperties.length === 0 ? (
-          <div className="text-center py-16 bg-white rounded-xl">
-            <p className="text-gray-500 text-lg">No properties found matching your criteria.</p>
-            <Button variant="outline" onClick={clearFilters} className="mt-4">
-              Clear Filters
-            </Button>
+          <div className="text-center py-20 bg-white rounded-xl border border-gray-100">
+            <p className="text-gray-400 text-lg mb-2">No properties found</p>
+            <p className="text-gray-400 text-sm mb-6">Try adjusting your search or filters.</p>
+            <Button variant="outline" onClick={clearFilters}>Clear Filters</Button>
           </div>
         ) : (
           <div className={`grid gap-8 ${viewMode === "grid" ? "grid-cols-1 md:grid-cols-2 lg:grid-cols-3" : "grid-cols-1"}`}>
-            {filteredProperties.map((property) => (
-              <PropertyCard key={property.id} property={property} />
+            {filteredProperties.map((property, idx) => (
+              <div key={property.id} className="listing-card" style={{ animationDelay: `${idx * 60}ms` }}>
+                <PropertyCard property={property} />
+              </div>
             ))}
           </div>
         )}
@@ -256,3 +199,5 @@ export default function Listings() {
     </div>
   );
 }
+
+

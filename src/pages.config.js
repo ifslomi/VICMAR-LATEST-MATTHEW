@@ -54,6 +54,7 @@ import Properties from './pages/Properties';
 import Amenities from './pages/Amenities';
 import AboutUs from './pages/AboutUs';
 import VicinityMap from './pages/VicinityMap';
+import ContactUs from './pages/ContactUs';
 import __Layout from './Layout.jsx';
 
 
@@ -65,6 +66,7 @@ export const PAGES = {
     "Amenities": Amenities,
     "AboutUs": AboutUs,
     "VicinityMap": VicinityMap,
+    "ContactUs": ContactUs,
 }
 
 export const pagesConfig = {

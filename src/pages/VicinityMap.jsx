@@ -234,69 +234,69 @@ export default function VicinityMap() {
   ];
 
   return (
-    <div ref={revealRef} className="min-h-screen bg-[#f8f6f0]">
+    <div ref={revealRef} className="min-h-screen bg-gray-50">
       {/* Header */}
-      <div className="relative bg-[#0a3620] pt-32 pb-20 px-4">
-        <div className="absolute inset-0 bg-gradient-to-b from-[#0a3620]/80 to-[#0a3620]" />
-        <div className="relative max-w-7xl mx-auto text-center">
-          <p className="text-xs tracking-[0.3em] uppercase text-[#4ade80] mb-4 font-sans font-medium header-animate header-animate-delay-1">Interactive Map</p>
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-light text-white mb-4 header-animate header-animate-delay-2">
-            Our <span className="italic">Properties</span>
-          </h1>
-          <p className="text-white/50 text-base max-w-xl mx-auto font-light font-sans header-animate header-animate-delay-3">
-            Explore the community layout and find your perfect lot
+      <div className="bg-[#166534] py-20 px-4 relative overflow-hidden">
+        <div className="absolute inset-0 opacity-5" style={{ backgroundImage: 'radial-gradient(circle at 20% 50%, white 1px, transparent 1px), radial-gradient(circle at 80% 20%, white 1px, transparent 1px)', backgroundSize: '40px 40px' }} />
+        <div className="relative max-w-7xl mx-auto text-center page-header">
+          <p className="text-[#86efac] text-xs font-semibold uppercase tracking-widest mb-3">Explore the Community</p>
+          <h1 className="text-4xl md:text-5xl font-bold text-white mb-4">Vicinity Map</h1>
+          <p className="text-gray-300 text-lg max-w-xl mx-auto">
+            Explore the Vicmar Homes community layout and find your perfect lot.
           </p>
-          <div className="w-16 h-[1px] bg-[#15803d] mx-auto mt-6 header-animate header-animate-delay-4" />
         </div>
       </div>
 
       <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 py-10">
-        {/* Instructions */}
-        <div className="flex flex-wrap items-center justify-between gap-4 mb-6 reveal reveal-up" style={{ animationDuration: '0.6s' }}>
+
+        {/* Toolbar */}
+        <div className="flex flex-wrap items-center justify-between gap-4 mb-4">
           <div>
-            <h2 className="text-lg font-medium text-[#0a3620]">Vicmar Homes Community Layout</h2>
-            <p className="text-gray-400 text-sm font-sans font-light">Hover over a lot to see details. Click to view more info. Scroll to zoom.</p>
+            <h2 className="text-xl font-bold text-[#166534]">Community Layout</h2>
+            <p className="text-gray-500 text-sm mt-1">Hover over a lot to see details · Click to view more info · Scroll to zoom</p>
           </div>
-          <div className="flex items-center gap-2">
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => setShowLegend(!showLegend)}
-              className="map-control gap-2 font-sans text-xs border-gray-200"
-            >
-              <Info className="w-3.5 h-3.5" />
-              Legend
-            </Button>
-          </div>
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => setShowLegend(!showLegend)}
+            className="map-control gap-2 border-[#166534] text-[#166534] hover:bg-[#166534]/5"
+          >
+            <Info className="w-4 h-4" />
+            {showLegend ? "Hide Legend" : "Show Legend"}
+          </Button>
         </div>
 
         {/* Legend */}
         {showLegend && (
-          <div className="bg-white border border-gray-100 p-4 mb-6">
-            <div className="flex flex-wrap gap-x-6 gap-y-2">
+          <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-5 mb-4">
+            <p className="text-xs font-semibold text-[#166534] uppercase tracking-wider mb-3">Property Types</p>
+            <div className="flex flex-wrap gap-x-6 gap-y-2 mb-4">
               {legendItems.map((item) => (
                 <div key={item.label} className="flex items-center gap-2">
-                  <div className="w-4 h-3 rounded-sm" style={{ backgroundColor: item.color, opacity: 0.6 }} />
-                  <span className="text-xs text-gray-600 font-sans">{item.label}</span>
+                  <div className="w-4 h-3 rounded" style={{ backgroundColor: item.color, opacity: 0.7 }} />
+                  <span className="text-sm text-gray-600">{item.label}</span>
                 </div>
               ))}
             </div>
-            <div className="flex flex-wrap gap-x-6 gap-y-2 mt-3 pt-3 border-t border-gray-100">
-              <div className="flex items-center gap-2">
-                <div className="w-2 h-2 rounded-full bg-emerald-400" />
-                <span className="text-xs text-gray-600 font-sans">Available</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <div className="w-2 h-2 rounded-full bg-amber-400" />
-                <span className="text-xs text-gray-600 font-sans">Reserved</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <div className="w-2 h-2 rounded-full bg-red-400" />
-                <span className="text-xs text-gray-600 font-sans">Sold</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <div className="w-2 h-2 rounded-full bg-gray-400" />
-                <span className="text-xs text-gray-600 font-sans">Vacant</span>
+            <div className="border-t border-gray-100 pt-3">
+              <p className="text-xs font-semibold text-[#166534] uppercase tracking-wider mb-2">Availability</p>
+              <div className="flex flex-wrap gap-x-6 gap-y-2">
+                <div className="flex items-center gap-2">
+                  <div className="w-2.5 h-2.5 rounded-full bg-emerald-500" />
+                  <span className="text-sm text-gray-600">Available</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <div className="w-2.5 h-2.5 rounded-full bg-amber-400" />
+                  <span className="text-sm text-gray-600">Reserved</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <div className="w-2.5 h-2.5 rounded-full bg-red-500" />
+                  <span className="text-sm text-gray-600">Sold</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <div className="w-2.5 h-2.5 rounded-full bg-gray-400" />
+                  <span className="text-sm text-gray-600">Vacant</span>
+                </div>
               </div>
             </div>
           </div>
@@ -305,7 +305,7 @@ export default function VicinityMap() {
         {/* Map Container */}
         <div
           ref={containerRef}
-          className="relative bg-white border border-gray-200 overflow-hidden select-none"
+          className="relative bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden select-none"
           style={{ cursor: isPanning ? "grabbing" : "grab" }}
           onMouseDown={handleMouseDown}
           onMouseMove={handleMouseMove}
@@ -316,31 +316,31 @@ export default function VicinityMap() {
           onTouchEnd={handleTouchEnd}
         >
           {/* Zoom Controls */}
-          <div className="map-control absolute top-4 right-4 z-20 flex flex-col gap-1">
+          <div className="map-control absolute top-4 right-4 z-20 flex flex-col gap-1.5">
             <button
               onClick={handleZoomIn}
-              className="w-9 h-9 bg-white/90 backdrop-blur border border-gray-200 flex items-center justify-center hover:bg-gray-50 transition-colors"
+              className="w-9 h-9 bg-white border border-gray-200 rounded-lg shadow-sm flex items-center justify-center hover:bg-[#166534] hover:text-white hover:border-[#166534] text-gray-600 transition-colors"
             >
-              <ZoomIn className="w-4 h-4 text-gray-700" />
+              <ZoomIn className="w-4 h-4" />
             </button>
             <button
               onClick={handleZoomOut}
-              className="w-9 h-9 bg-white/90 backdrop-blur border border-gray-200 flex items-center justify-center hover:bg-gray-50 transition-colors"
+              className="w-9 h-9 bg-white border border-gray-200 rounded-lg shadow-sm flex items-center justify-center hover:bg-[#166534] hover:text-white hover:border-[#166534] text-gray-600 transition-colors"
             >
-              <ZoomOut className="w-4 h-4 text-gray-700" />
+              <ZoomOut className="w-4 h-4" />
             </button>
             <button
               onClick={handleReset}
-              className="w-9 h-9 bg-white/90 backdrop-blur border border-gray-200 flex items-center justify-center hover:bg-gray-50 transition-colors"
+              className="w-9 h-9 bg-white border border-gray-200 rounded-lg shadow-sm flex items-center justify-center hover:bg-[#166534] hover:text-white hover:border-[#166534] text-gray-600 transition-colors"
             >
-              <Maximize2 className="w-4 h-4 text-gray-700" />
+              <Maximize2 className="w-4 h-4" />
             </button>
           </div>
 
           {/* Zoom level indicator */}
           {scale > 1 && (
-            <div className="absolute top-4 left-4 z-20 bg-white/90 backdrop-blur border border-gray-200 px-3 py-1.5">
-              <span className="text-xs text-gray-600 font-sans font-medium">{Math.round(scale * 100)}%</span>
+            <div className="absolute top-4 left-4 z-20 bg-white border border-gray-200 rounded-lg shadow-sm px-3 py-1.5">
+              <span className="text-xs font-semibold text-[#166534]">{Math.round(scale * 100)}%</span>
             </div>
           )}
 
@@ -403,7 +403,7 @@ export default function VicinityMap() {
             </div>
           </div>
 
-          {/* Hover Tooltip (desktop) */}
+          {/* Hover Tooltip */}
           {hoveredProp && !selectedProp && (
             <div
               className="tooltip-card absolute z-30 pointer-events-none"
@@ -412,29 +412,29 @@ export default function VicinityMap() {
                 top: `${Math.min(tooltipPos.y - 10, (containerRef.current?.clientHeight || 999) - 180)}px`,
               }}
             >
-              <div className="bg-[#0a3620] text-white p-4 shadow-2xl min-w-[220px] max-w-[280px] border border-[#15803d]/30">
+              <div className="bg-white text-gray-800 p-4 rounded-xl shadow-xl border border-gray-100 min-w-[220px] max-w-[280px]">
                 <div className="flex items-center gap-2 mb-2">
-                  <MapPin className="w-3.5 h-3.5 text-[#4ade80] flex-shrink-0" />
-                  <span className="text-xs text-[#4ade80] font-sans font-medium tracking-wider uppercase">
-                    Block {hoveredProp.info.blockNum} &middot; {hoveredProp.info.phase}
+                  <MapPin className="w-3.5 h-3.5 text-[#22c55e] flex-shrink-0" />
+                  <span className="text-xs text-[#166534] font-semibold uppercase tracking-wider">
+                    Block {hoveredProp.info.blockNum} · {hoveredProp.info.phase}
                   </span>
                 </div>
-                <h3 className="text-sm font-medium mb-3">{hoveredProp.info.type}</h3>
+                <h3 className="text-sm font-bold text-[#166534] mb-3">{hoveredProp.info.type}</h3>
 
                 {(() => {
                   const units = getUnitInfo(hoveredProp.info);
                   if (units.length === 0) return null;
                   return (
-                    <div className="space-y-2">
+                    <div className="space-y-1.5">
                       {units.map((u, i) => (
-                        <div key={i} className="flex items-center justify-between text-xs">
-                          <span className="text-white/60 font-sans">
-                            {u.key ? `Unit ${u.key}` : ""} Lot {u.data.lotNum}
-                            <span className="text-white/40 ml-1">({u.data.lotArea} sqm)</span>
+                        <div key={i} className="flex items-center justify-between text-xs bg-gray-50 rounded-lg px-2.5 py-1.5">
+                          <span className="text-gray-600">
+                            {u.key ? `Unit ${u.key} · ` : ""}Lot {u.data.lotNum}
+                            <span className="text-gray-400 ml-1">({u.data.lotArea} sqm)</span>
                           </span>
                           <span className="flex items-center gap-1.5">
                             <span className={`w-1.5 h-1.5 rounded-full ${getAvailabilityDot(u.data.availability)}`} />
-                            <span className={`font-sans font-medium ${getAvailabilityColor(u.data.availability)}`}>
+                            <span className={`font-semibold ${getAvailabilityColor(u.data.availability)}`}>
                               {u.data.availability}
                             </span>
                           </span>
@@ -444,112 +444,113 @@ export default function VicinityMap() {
                   );
                 })()}
 
-                <div className="mt-3 pt-2 border-t border-white/10">
-                  <p className="text-[10px] text-white/30 font-sans">Click for more details</p>
+                <div className="mt-3 pt-2 border-t border-gray-100">
+                  <p className="text-[10px] text-gray-400">Click for more details</p>
                 </div>
               </div>
             </div>
           )}
         </div>
 
-        {/* Selected Property Detail Card */}
-        {selectedProp && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40 backdrop-blur-sm" onClick={() => setSelectedProp(null)}>
-            <div
-              className="bg-white max-w-md w-full shadow-2xl border border-gray-100 overflow-hidden"
-              onClick={(e) => e.stopPropagation()}
-            >
-              {/* Card Header */}
-              <div className="bg-[#0a3620] p-6 relative">
-                <button
-                  onClick={() => setSelectedProp(null)}
-                  className="absolute top-4 right-4 w-8 h-8 flex items-center justify-center text-white/60 hover:text-white transition-colors"
-                >
-                  <X className="w-4 h-4" />
-                </button>
-                <div className="flex items-center gap-2 mb-2">
-                  <MapPin className="w-4 h-4 text-[#4ade80]" />
-                  <span className="text-xs text-[#4ade80] font-sans font-medium tracking-wider uppercase">
-                    Block {selectedProp.info.blockNum} &middot; {selectedProp.info.phase}
-                  </span>
-                </div>
-                <h3 className="text-xl text-white font-light">{selectedProp.info.type}</h3>
-              </div>
-
-              {/* Card Body */}
-              <div className="p-6">
-                {(() => {
-                  const units = getUnitInfo(selectedProp.info);
-                  if (units.length === 0) return <p className="text-gray-400 text-sm font-sans">No unit information available.</p>;
-
-                  return (
-                    <div className="space-y-3">
-                      <p className="text-xs text-gray-400 font-sans font-medium tracking-wider uppercase mb-3">Unit Details</p>
-                      {units.map((u, i) => (
-                        <div key={i} className="flex items-center justify-between p-3 bg-gray-50 border border-gray-100">
-                          <div>
-                            <p className="text-sm font-medium text-[#0a3620]">
-                              {u.key ? `Unit ${u.key} — ` : ""}Lot {u.data.lotNum}
-                            </p>
-                            <p className="text-xs text-gray-400 font-sans mt-0.5">{u.data.lotArea} sqm</p>
-                          </div>
-                          <div className="flex items-center gap-2">
-                            <span className={`w-2 h-2 rounded-full ${getAvailabilityDot(u.data.availability)}`} />
-                            <span className={`text-sm font-sans font-medium ${getAvailabilityColor(u.data.availability).replace('text-', 'text-')}`}
-                              style={{
-                                color: u.data.availability.toLowerCase() === "available" ? "#15803d"
-                                  : u.data.availability.toLowerCase() === "sold" ? "#dc2626"
-                                  : u.data.availability.toLowerCase() === "reserved" ? "#ca8a04"
-                                  : "#6b7280"
-                              }}
-                            >
-                              {u.data.availability}
-                            </span>
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  );
-                })()}
-
-                {/* Action buttons */}
-                <div className="mt-6 flex gap-3">
-                  {getListingType(selectedProp.info.type) && (
-                    <Button
-                      onClick={() => handleViewListing(selectedProp.info.type)}
-                      className="flex-1 bg-[#0a3620] hover:bg-[#0f4c2d] rounded-none tracking-widest uppercase text-xs font-sans py-5"
-                    >
-                      View Listings
-                    </Button>
-                  )}
-                  <Button
-                    variant="outline"
-                    onClick={() => setSelectedProp(null)}
-                    className="flex-1 rounded-none tracking-widest uppercase text-xs font-sans py-5 border-gray-200"
-                  >
-                    Close
-                  </Button>
-                </div>
-              </div>
-            </div>
-          </div>
-        )}
-
         {/* Stats Summary */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-8 stagger-children">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-6">
           {[
             { label: "Total Lots", value: allProperties.length },
             { label: "Duplex Units", value: allProperties.filter(p => p.info.type.toLowerCase().includes("duplex")).length },
             { label: "Triplex Units", value: allProperties.filter(p => p.info.type.toLowerCase().includes("triplex")).length },
             { label: "Rowhouse Units", value: allProperties.filter(p => p.info.type.toLowerCase().includes("rowhouse")).length },
           ].map((stat, idx) => (
-            <div key={idx} className="reveal reveal-up bg-white p-6 text-center border border-gray-100" style={{ animationDuration: '0.5s' }}>
-              <p className="text-2xl font-light text-[#0a3620]">{stat.value}</p>
-              <p className="text-gray-400 text-xs tracking-wider uppercase mt-1 font-sans">{stat.label}</p>
+            <div key={idx} className="bg-white rounded-xl shadow-sm border border-gray-100 p-6 text-center">
+              <p className="text-3xl font-bold text-[#166534]">{stat.value}</p>
+              <p className="text-gray-500 text-sm mt-1">{stat.label}</p>
             </div>
           ))}
         </div>
       </div>
+
+      {/* Selected Property Modal */}
+      {selectedProp && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm" onClick={() => setSelectedProp(null)}>
+          <div
+            className="bg-white rounded-xl max-w-md w-full shadow-2xl overflow-hidden"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Modal Header */}
+            <div className="bg-[#166534] p-6 relative">
+              <button
+                onClick={() => setSelectedProp(null)}
+                className="absolute top-4 right-4 w-8 h-8 flex items-center justify-center text-white/70 hover:text-white hover:bg-white/10 rounded-full transition-colors"
+              >
+                <X className="w-4 h-4" />
+              </button>
+              <div className="flex items-center gap-2 mb-2">
+                <MapPin className="w-4 h-4 text-[#22c55e]" />
+                <span className="text-xs text-[#22c55e] font-semibold uppercase tracking-wider">
+                  Block {selectedProp.info.blockNum} · {selectedProp.info.phase}
+                </span>
+              </div>
+              <h3 className="text-xl font-bold text-white">{selectedProp.info.type}</h3>
+            </div>
+
+            {/* Modal Body */}
+            <div className="p-6">
+              {(() => {
+                const units = getUnitInfo(selectedProp.info);
+                if (units.length === 0) return <p className="text-gray-400 text-sm">No unit information available.</p>;
+
+                return (
+                  <div className="space-y-3">
+                    <p className="text-xs font-semibold text-[#166534] uppercase tracking-wider mb-3">Unit Details</p>
+                    {units.map((u, i) => (
+                      <div key={i} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg border border-gray-100">
+                        <div>
+                          <p className="text-sm font-semibold text-[#166534]">
+                            {u.key ? `Unit ${u.key} — ` : ""}Lot {u.data.lotNum}
+                          </p>
+                          <p className="text-xs text-gray-400 mt-0.5">{u.data.lotArea} sqm</p>
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <span className={`w-2.5 h-2.5 rounded-full ${getAvailabilityDot(u.data.availability)}`} />
+                          <span
+                            className="text-sm font-semibold"
+                            style={{
+                              color: u.data.availability.toLowerCase() === "available" ? "#16a34a"
+                                : u.data.availability.toLowerCase() === "sold" ? "#dc2626"
+                                : u.data.availability.toLowerCase() === "reserved" ? "#ca8a04"
+                                : "#6b7280"
+                            }}
+                          >
+                            {u.data.availability}
+                          </span>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                );
+              })()}
+
+              {/* Action Buttons */}
+              <div className="mt-6 flex gap-3">
+                {getListingType(selectedProp.info.type) && (
+                  <Button
+                    onClick={() => handleViewListing(selectedProp.info.type)}
+                    className="flex-1 bg-[#22c55e] hover:bg-[#16a34a] text-white font-semibold"
+                  >
+                    View Listings
+                  </Button>
+                )}
+                <Button
+                  variant="outline"
+                  onClick={() => setSelectedProp(null)}
+                  className="flex-1 border-gray-200 text-gray-600 hover:bg-gray-50"
+                >
+                  Close
+                </Button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

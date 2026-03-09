@@ -1,16 +1,17 @@
 import React from "react";
 import { Home, TrendingUp, Shield, FileCheck } from "lucide-react";
+import { useScrollReveal } from "@/hooks/useScrollReveal";
 
 const services = [
   {
     icon: Home,
     title: "Quality Homes",
-    description: "Expertly designed and constructed homes that meet the highest standards of quality and comfort for Filipino families.",
+    description: "Expertly designed homes meeting the highest standards for quality and comfort for Filipino families.",
   },
   {
     icon: TrendingUp,
     title: "Investment Value",
-    description: "Strategic locations and quality construction ensure your property investment grows in value over time.",
+    description: "Strategic locations and quality construction ensure your property grows in value over time.",
   },
   {
     icon: Shield,
@@ -20,43 +21,59 @@ const services = [
   {
     icon: FileCheck,
     title: "Flexible Financing",
-    description: "Various payment schemes including bank financing, Pag-IBIG, and in-house financing options available.",
+    description: "Payment schemes including bank financing, Pag-IBIG, and in-house financing options.",
   },
 ];
 
+function Reveal({ children, delay = 0, className = "" }) {
+  const ref = useScrollReveal({ threshold: 0.1, triggerOnce: true });
+  return (
+    <div
+      ref={ref}
+      className={`scroll-reveal-init ${className}`}
+      style={delay ? { transitionDelay: `${delay}ms` } : undefined}
+    >
+      {children}
+    </div>
+  );
+}
+
 export default function ServicesSection() {
   return (
-    <section className="py-20 bg-gray-50">
+    <section className="py-24 bg-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <h2 className="text-3xl md:text-4xl font-bold text-[#166534] mb-4 text-center">
-          How can Vicmar Homes help you?
-        </h2>
-        <p className="text-gray-600 text-center mb-12 max-w-2xl mx-auto">
-          We're committed to making your dream of owning a home a reality
-        </p>
+        <Reveal className="text-center mb-14">
+          <p className="text-[#22c55e] text-xs font-semibold uppercase tracking-widest mb-3">Why Choose Us</p>
+          <h2 className="text-3xl md:text-4xl font-bold text-[#166534] mb-3">
+            How Vicmar Homes Can Help You
+          </h2>
+          <p className="text-gray-500 max-w-xl mx-auto text-sm">
+            We're committed to making your dream of owning a home a reality.
+          </p>
+        </Reveal>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           {services.map((service, index) => {
             const Icon = service.icon;
             return (
-              <div
-                key={index}
-                className="group bg-white rounded-xl p-8 shadow-sm hover:shadow-xl transition-all duration-300 border border-gray-100"
-              >
-                <div className="w-14 h-14 bg-[#22c55e]/10 group-hover:bg-[#22c55e]/20 rounded-lg flex items-center justify-center mb-6 transition-colors">
-                  <Icon className="w-7 h-7 text-[#22c55e]" />
+              <Reveal key={index} delay={index * 90}>
+                <div className="svc-card bg-gray-50 rounded-2xl p-7 border border-gray-100 h-full">
+                  <div className="w-12 h-12 bg-[#22c55e]/10 rounded-xl flex items-center justify-center mb-5 transition-colors group-hover:bg-[#22c55e]/20">
+                    <Icon className="w-6 h-6 text-[#22c55e]" />
+                  </div>
+                  <h3 className="font-bold text-[#166534] mb-2">{service.title}</h3>
+                  <p className="text-gray-500 text-sm leading-relaxed">{service.description}</p>
                 </div>
-                <h3 className="font-bold text-lg text-[#166534] mb-3 group-hover:text-[#22c55e] transition-colors">
-                  {service.title}
-                </h3>
-                <p className="text-gray-600 text-sm leading-relaxed">
-                  {service.description}
-                </p>
-              </div>
+              </Reveal>
             );
           })}
         </div>
       </div>
+
+      <style>{`
+        .svc-card { transition: transform 0.25s ease, box-shadow 0.25s ease; }
+        .svc-card:hover { transform: translateY(-5px); box-shadow: 0 16px 40px rgba(22,101,52,0.10); }
+      `}</style>
     </section>
   );
 }

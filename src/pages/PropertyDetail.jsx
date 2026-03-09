@@ -1,24 +1,21 @@
 import React, { useState } from "react";
 import { base44 } from "@/api/base44Client";
-import { useQuery, useMutation } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import { Link } from "react-router-dom";
 import { createPageUrl } from "../utils";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import { toast } from "sonner";
-import { 
-  Bed, Bath, Square, MapPin, ArrowLeft, Phone, Mail, 
-  ChevronLeft, ChevronRight, Check, Maximize, Eye, FileText
+import {
+  Bed, Bath, Square, MapPin, ArrowLeft, Phone,
+  ChevronLeft, ChevronRight, Check, Maximize, Eye, FileText, MessageCircle
 } from "lucide-react";
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
 import PanoramaViewer from "@/components/shared/PanoramaViewer";
+import { useScrollReveal } from "@/hooks/useScrollReveal";
 
-// Fix leaflet marker icon
 delete L.Icon.Default.prototype._getIconUrl;
 L.Icon.Default.mergeOptions({
   iconRetinaUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon-2x.png',
@@ -32,6 +29,19 @@ const typeLabels = {
   rowhouse: "Rowhouse",
 };
 
+function Reveal({ children, delay = 0, className = "" }) {
+  const ref = useScrollReveal({ threshold: 0.08, triggerOnce: true });
+  return (
+    <div
+      ref={ref}
+      className={`scroll-reveal-init ${className}`}
+      style={delay ? { transitionDelay: `${delay}ms` } : undefined}
+    >
+      {children}
+    </div>
+  );
+}
+
 export default function PropertyDetail() {
   const urlParams = new URLSearchParams(window.location.search);
   const propertyId = urlParams.get("id");
@@ -41,7 +51,6 @@ export default function PropertyDetail() {
   const [showVirtualTour, setShowVirtualTour] = useState(false);
   const [showFloorPlan, setShowFloorPlan] = useState(false);
   const [selectedFloorPlan, setSelectedFloorPlan] = useState(null);
-  const [inquiryForm, setInquiryForm] = useState({ name: "", email: "", phone: "", message: "" });
 
   const { data: property, isLoading } = useQuery({
     queryKey: ["property", propertyId],
@@ -50,14 +59,6 @@ export default function PropertyDetail() {
       return properties[0];
     },
     enabled: !!propertyId,
-  });
-
-  const createInquiry = useMutation({
-    mutationFn: (data) => base44.entities.Inquiry.create(data),
-    onSuccess: () => {
-      toast.success("Inquiry sent successfully! We'll contact you soon.");
-      setInquiryForm({ name: "", email: "", phone: "", message: "" });
-    },
   });
 
   if (isLoading) {
@@ -70,10 +71,10 @@ export default function PropertyDetail() {
 
   if (!property) {
     return (
-      <div className="min-h-screen bg-gray-50 flex flex-col items-center justify-center">
-        <h1 className="text-2xl font-bold text-gray-900 mb-4">Property not found</h1>
+      <div className="min-h-screen bg-gray-50 flex flex-col items-center justify-center gap-4">
+        <h1 className="text-2xl font-bold text-gray-900">Property not found</h1>
         <Link to={createPageUrl("Listings")}>
-          <Button>Back to Listings</Button>
+          <Button className="bg-[#22c55e] hover:bg-[#16a34a]">Back to Listings</Button>
         </Link>
       </div>
     );
@@ -84,121 +85,201 @@ export default function PropertyDetail() {
     allImages.push("https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=1200&q=80");
   }
 
-  const formatPrice = (value) => {
-    return new Intl.NumberFormat('en-PH', { 
-      style: 'currency', 
-      currency: 'PHP',
-      maximumFractionDigits: 0 
-    }).format(value);
-  };
-
-  const handleInquirySubmit = (e) => {
-    e.preventDefault();
-    createInquiry.mutate({
-      ...inquiryForm,
-      property_id: property.id,
-      property_title: property.title,
-    });
-  };
+  const formatPrice = (value) =>
+    new Intl.NumberFormat('en-PH', { style: 'currency', currency: 'PHP', maximumFractionDigits: 0 }).format(value);
 
   const nextImage = () => setCurrentImageIndex((prev) => (prev + 1) % allImages.length);
   const prevImage = () => setCurrentImageIndex((prev) => (prev - 1 + allImages.length) % allImages.length);
 
+  const inquireUrl = createPageUrl("ContactUs") + `?property=${encodeURIComponent(property.title)}`;
+
+  const statusConfig = {
+    available: { label: "For Sale", className: "bg-green-500 text-white border-0" },
+    reserved:  { label: "Reserved", className: "bg-amber-500 text-white border-0" },
+    sold:      { label: "Sold",     className: "bg-red-500 text-white border-0" },
+  };
+  const status = statusConfig[property.status] || statusConfig.available;
+
   return (
-    <div className="min-h-screen bg-gray-50">
-      {/* Back Button */}
-      <div className="bg-white border-b">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+    <div className="min-h-screen bg-gray-50 pb-24">
+      <style>{`
+        @keyframes galleryFade {
+          from { opacity: 0.4; transform: scale(1.02); }
+          to   { opacity: 1;   transform: scale(1); }
+        }
+        .gallery-img { animation: galleryFade 0.4s ease both; }
+        .spec-pill {
+          display: flex; align-items: center; gap: 8px;
+          padding: 10px 16px; background: #f0fdf4;
+          border: 1px solid #bbf7d0; border-radius: 999px;
+          transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        .spec-pill:hover { transform: translateY(-2px); box-shadow: 0 6px 16px rgba(22,101,52,0.10); }
+        .feat-item {
+          display: flex; align-items: center; gap: 10px;
+          padding: 8px 12px; border-radius: 8px;
+          transition: background 0.2s ease;
+        }
+        .feat-item:hover { background: #f0fdf4; }
+        .floor-card {
+          transition: transform 0.25s ease, box-shadow 0.25s ease;
+        }
+        .floor-card:hover { transform: translateY(-4px); box-shadow: 0 12px 32px rgba(22,101,52,0.12); }
+        .sticky-bar {
+          animation: stickySlideUp 0.4s ease both;
+        }
+        @keyframes stickySlideUp {
+          from { transform: translateY(100%); opacity: 0; }
+          to   { transform: translateY(0);   opacity: 1; }
+        }
+      `}</style>
+
+      {/* Back Bar */}
+      <div className="bg-white border-b border-gray-100 page-header">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex items-center justify-between">
           <Link
             to={createPageUrl("Listings")}
-            className="inline-flex items-center gap-2 text-gray-600 hover:text-[#166534] transition-colors"
+            className="inline-flex items-center gap-2 text-gray-500 hover:text-[#166534] transition-colors text-sm font-medium"
           >
-            <ArrowLeft className="w-5 h-5" />
+            <ArrowLeft className="w-4 h-4" />
             Back to Listings
           </Link>
+          <div className="flex items-center gap-2">
+            <Badge className={status.className}>{status.label}</Badge>
+            <Badge variant="outline" className="text-[#166534] border-[#166534]/30">
+              {typeLabels[property.property_type] || property.property_type}
+            </Badge>
+          </div>
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          {/* Main Content */}
-          <div className="lg:col-span-2 space-y-8">
-            {/* Image Gallery */}
-            <div className="bg-white rounded-xl overflow-hidden shadow-sm">
-              <div className="relative h-96 md:h-[500px]">
-                <img
-                  src={allImages[currentImageIndex]}
-                  alt={property.title}
-                  className="w-full h-full object-cover"
-                />
-                
-                {/* Navigation Arrows */}
-                {allImages.length > 1 && (
-                  <>
-                    <button
-                      onClick={prevImage}
-                      className="absolute left-4 top-1/2 -translate-y-1/2 bg-white/90 hover:bg-white p-2 rounded-full shadow-lg transition-all"
-                    >
-                      <ChevronLeft className="w-6 h-6" />
-                    </button>
-                    <button
-                      onClick={nextImage}
-                      className="absolute right-4 top-1/2 -translate-y-1/2 bg-white/90 hover:bg-white p-2 rounded-full shadow-lg transition-all"
-                    >
-                      <ChevronRight className="w-6 h-6" />
-                    </button>
-                  </>
-                )}
+      {/* Cinematic Gallery */}
+      <div className="relative bg-black" style={{ height: "clamp(320px, 55vh, 600px)" }}>
+        <img
+          key={currentImageIndex}
+          src={allImages[currentImageIndex]}
+          alt={property.title}
+          className="gallery-img w-full h-full object-cover opacity-90"
+        />
 
-                {/* Status Badge */}
-                <Badge className={`absolute top-4 left-4 ${
-                  property.status === "available" ? "bg-green-500" :
-                  property.status === "reserved" ? "bg-yellow-500" : "bg-red-500"
-                } text-white border-0 capitalize`}>
-                  {property.status === "available" ? "For Sale" : property.status}
-                </Badge>
+        {/* Dark gradient for readability */}
+        <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-black/20" />
 
-                {/* Expand Button */}
+        {/* Nav arrows */}
+        {allImages.length > 1 && (
+          <>
+            <button
+              onClick={prevImage}
+              className="absolute left-4 top-1/2 -translate-y-1/2 w-10 h-10 bg-white/20 hover:bg-white/40 backdrop-blur-sm rounded-full flex items-center justify-center transition-all"
+            >
+              <ChevronLeft className="w-5 h-5 text-white" />
+            </button>
+            <button
+              onClick={nextImage}
+              className="absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 bg-white/20 hover:bg-white/40 backdrop-blur-sm rounded-full flex items-center justify-center transition-all"
+            >
+              <ChevronRight className="w-5 h-5 text-white" />
+            </button>
+          </>
+        )}
+
+        {/* Bottom overlay info */}
+        <div className="absolute bottom-0 left-0 right-0 px-6 py-5 flex items-end justify-between">
+          <div>
+            <h1 className="text-2xl md:text-3xl font-bold text-white leading-tight">{property.title}</h1>
+            {property.location && (
+              <p className="text-white/75 text-sm flex items-center gap-1.5 mt-1">
+                <MapPin className="w-4 h-4" />
+                {property.location}
+              </p>
+            )}
+          </div>
+          <div className="text-right">
+            <p className="text-3xl font-bold text-[#86efac]">{formatPrice(property.price)}</p>
+          </div>
+        </div>
+
+        {/* Counter + expand */}
+        <div className="absolute top-4 right-4 flex items-center gap-2">
+          <span className="bg-black/50 text-white text-xs px-2.5 py-1 rounded-full backdrop-blur-sm">
+            {currentImageIndex + 1} / {allImages.length}
+          </span>
+          <button
+            onClick={() => setShowGallery(true)}
+            className="bg-black/50 hover:bg-black/70 text-white text-xs px-3 py-1.5 rounded-full flex items-center gap-1.5 backdrop-blur-sm transition-colors"
+          >
+            <Maximize className="w-3.5 h-3.5" />
+            All Photos
+          </button>
+        </div>
+      </div>
+
+      {/* Thumbnail Strip */}
+      {allImages.length > 1 && (
+        <div className="bg-white border-b border-gray-100">
+          <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="flex gap-2 py-3 overflow-x-auto scrollbar-hide">
+              {allImages.map((img, idx) => (
                 <button
-                  onClick={() => setShowGallery(true)}
-                  className="absolute bottom-4 right-4 bg-white/90 hover:bg-white p-2 rounded-lg shadow-lg transition-all flex items-center gap-2"
+                  key={idx}
+                  onClick={() => setCurrentImageIndex(idx)}
+                  className={`flex-shrink-0 w-16 h-12 rounded-lg overflow-hidden border-2 transition-all ${
+                    idx === currentImageIndex ? "border-[#22c55e] opacity-100" : "border-transparent opacity-60 hover:opacity-90"
+                  }`}
                 >
-                  <Maximize className="w-5 h-5" />
-                  <span className="text-sm font-medium">View All Photos</span>
+                  <img src={img} alt="" className="w-full h-full object-cover" />
                 </button>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
 
-                {/* Image Counter */}
-                <div className="absolute bottom-4 left-4 bg-black/60 text-white px-3 py-1 rounded-full text-sm">
-                  {currentImageIndex + 1} / {allImages.length}
+      {/* Page Content */}
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-8">
+
+        {/* Specs Bar */}
+        {(property.bedrooms || property.bathrooms || property.floor_area || property.lot_area) && (
+          <Reveal>
+            <div className="flex flex-wrap gap-3">
+              {property.bedrooms && (
+                <div className="spec-pill">
+                  <Bed className="w-4 h-4 text-[#166534]" />
+                  <span className="text-sm font-semibold text-[#166534]">{property.bedrooms} Bedrooms</span>
                 </div>
-              </div>
-
-              {/* Thumbnail Strip */}
-              {allImages.length > 1 && (
-                <div className="flex gap-2 p-4 overflow-x-auto">
-                  {allImages.map((img, idx) => (
-                    <button
-                      key={idx}
-                      onClick={() => setCurrentImageIndex(idx)}
-                      className={`flex-shrink-0 w-20 h-16 rounded-lg overflow-hidden border-2 transition-all ${
-                        idx === currentImageIndex ? "border-[#22c55e]" : "border-transparent"
-                      }`}
-                    >
-                      <img src={img} alt="" className="w-full h-full object-cover" />
-                    </button>
-                  ))}
+              )}
+              {property.bathrooms && (
+                <div className="spec-pill">
+                  <Bath className="w-4 h-4 text-[#166534]" />
+                  <span className="text-sm font-semibold text-[#166534]">{property.bathrooms} Bathrooms</span>
+                </div>
+              )}
+              {property.floor_area && (
+                <div className="spec-pill">
+                  <Square className="w-4 h-4 text-[#166534]" />
+                  <span className="text-sm font-semibold text-[#166534]">{property.floor_area} sqm Floor Area</span>
+                </div>
+              )}
+              {property.lot_area && (
+                <div className="spec-pill">
+                  <Square className="w-4 h-4 text-[#166534]" />
+                  <span className="text-sm font-semibold text-[#166534]">{property.lot_area} sqm Lot Area</span>
                 </div>
               )}
             </div>
+          </Reveal>
+        )}
 
-            {/* Quick Actions */}
-            <div className="flex flex-wrap gap-4">
+        {/* Quick Actions */}
+        {(property.panorama_image || property.floor_plans) && (
+          <Reveal>
+            <div className="flex flex-wrap gap-3">
               {property.panorama_image && (
                 <Button
                   onClick={() => setShowVirtualTour(true)}
-                  className="bg-[#166534] hover:bg-[#166534]/90 gap-2"
+                  className="bg-[#166534] hover:bg-[#166534]/90 gap-2 rounded-full px-6"
                 >
-                  <Eye className="w-5 h-5" />
+                  <Eye className="w-4 h-4" />
                   360° Virtual Tour
                 </Button>
               )}
@@ -206,233 +287,151 @@ export default function PropertyDetail() {
                 <Button
                   onClick={() => {
                     const firstPlan = property.floor_plans.groundFloor || property.floor_plans.secondFloor;
-                    if (firstPlan) {
-                      setSelectedFloorPlan(firstPlan);
-                      setShowFloorPlan(true);
-                    }
+                    if (firstPlan) { setSelectedFloorPlan(firstPlan); setShowFloorPlan(true); }
                   }}
                   variant="outline"
-                  className="gap-2"
+                  className="gap-2 rounded-full px-6 border-[#166534] text-[#166534] hover:bg-[#166534]/5"
                 >
-                  <FileText className="w-5 h-5" />
+                  <FileText className="w-4 h-4" />
                   View Floor Plans
                 </Button>
               )}
             </div>
+          </Reveal>
+        )}
 
-            {/* Floor Plans Section */}
-            {property.floor_plans && (
-              <div className="bg-white rounded-xl p-6 shadow-sm">
-                <h2 className="text-xl font-bold text-[#166534] mb-4">Floor Plans</h2>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  {property.floor_plans.groundFloor && (
-                    <div 
-                      className="cursor-pointer group"
-                      onClick={() => {
-                        setSelectedFloorPlan(property.floor_plans.groundFloor);
-                        setShowFloorPlan(true);
-                      }}
-                    >
-                      <div className="relative overflow-hidden rounded-lg border-2 border-gray-200 group-hover:border-[#22c55e] transition-colors">
-                        <img 
-                          src={property.floor_plans.groundFloor.image} 
-                          alt="Ground Floor Plan" 
-                          className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
-                        />
-                        <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors flex items-center justify-center">
-                          <Maximize className="w-8 h-8 text-white opacity-0 group-hover:opacity-100 transition-opacity" />
-                        </div>
-                      </div>
-                      <p className="mt-2 text-center font-medium text-gray-700">
-                        {property.floor_plans.groundFloor.label || "Ground Floor"}
-                      </p>
-                    </div>
-                  )}
-                  {property.floor_plans.secondFloor && (
-                    <div 
-                      className="cursor-pointer group"
-                      onClick={() => {
-                        setSelectedFloorPlan(property.floor_plans.secondFloor);
-                        setShowFloorPlan(true);
-                      }}
-                    >
-                      <div className="relative overflow-hidden rounded-lg border-2 border-gray-200 group-hover:border-[#22c55e] transition-colors">
-                        <img 
-                          src={property.floor_plans.secondFloor.image} 
-                          alt="Second Floor Plan" 
-                          className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
-                        />
-                        <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors flex items-center justify-center">
-                          <Maximize className="w-8 h-8 text-white opacity-0 group-hover:opacity-100 transition-opacity" />
-                        </div>
-                      </div>
-                      <p className="mt-2 text-center font-medium text-gray-700">
-                        {property.floor_plans.secondFloor.label || "Second Floor"}
-                      </p>
-                    </div>
-                  )}
-                </div>
-              </div>
-            )}
-
-            {/* Property Info */}
-            <div className="bg-white rounded-xl p-6 shadow-sm">
-              <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-4 mb-6">
-                <div>
-                  <Badge variant="secondary" className="mb-2">
-                    {typeLabels[property.property_type] || property.property_type}
-                  </Badge>
-                  <h1 className="text-2xl md:text-3xl font-bold text-[#166534]">{property.title}</h1>
-                  {property.location && (
-                    <p className="text-gray-500 flex items-center gap-2 mt-2">
-                      <MapPin className="w-5 h-5" />
-                      {property.location}
-                    </p>
-                  )}
-                </div>
-                <p className="text-3xl font-bold text-[#22c55e]">
-                  {formatPrice(property.price)}
-                </p>
-              </div>
-
-              {/* Specs */}
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-4 p-4 bg-gray-50 rounded-lg mb-6">
-                {property.bedrooms && (
-                  <div className="text-center">
-                    <Bed className="w-6 h-6 mx-auto mb-2 text-[#22c55e]" />
-                    <p className="font-semibold">{property.bedrooms}</p>
-                    <p className="text-sm text-gray-500">Bedrooms</p>
-                  </div>
-                )}
-                {property.bathrooms && (
-                  <div className="text-center">
-                    <Bath className="w-6 h-6 mx-auto mb-2 text-[#22c55e]" />
-                    <p className="font-semibold">{property.bathrooms}</p>
-                    <p className="text-sm text-gray-500">Bathrooms</p>
-                  </div>
-                )}
-                {property.floor_area && (
-                  <div className="text-center">
-                    <Square className="w-6 h-6 mx-auto mb-2 text-[#22c55e]" />
-                    <p className="font-semibold">{property.floor_area} sqm</p>
-                    <p className="text-sm text-gray-500">Floor Area</p>
-                  </div>
-                )}
-                {property.lot_area && (
-                  <div className="text-center">
-                    <Square className="w-6 h-6 mx-auto mb-2 text-[#22c55e]" />
-                    <p className="font-semibold">{property.lot_area} sqm</p>
-                    <p className="text-sm text-gray-500">Lot Area</p>
-                  </div>
-                )}
-              </div>
-
-              {/* Description */}
-              {property.description && (
-                <div className="mb-6">
-                  <h2 className="text-xl font-bold text-[#166534] mb-3">Description</h2>
-                  <p className="text-gray-600 leading-relaxed whitespace-pre-line">{property.description}</p>
-                </div>
-              )}
-
-              {/* Features */}
-              {property.features?.length > 0 && (
-                <div>
-                  <h2 className="text-xl font-bold text-[#166534] mb-3">Features & Amenities</h2>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                    {property.features.map((feature, idx) => (
-                      <div key={idx} className="flex items-center gap-2">
-                        <Check className="w-5 h-5 text-green-500" />
-                        <span className="text-gray-600">{feature}</span>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              )}
+        {/* Description */}
+        {property.description && (
+          <Reveal>
+            <div className="bg-white rounded-2xl p-8 shadow-sm border border-gray-100">
+              <p className="text-[#22c55e] text-xs font-semibold uppercase tracking-widest mb-2">About This Property</p>
+              <h2 className="text-xl font-bold text-[#166534] mb-4">Description</h2>
+              <p className="text-gray-600 leading-relaxed whitespace-pre-line">{property.description}</p>
             </div>
+          </Reveal>
+        )}
 
-            {/* Map */}
-            {property.latitude && property.longitude && (
-              <div className="bg-white rounded-xl p-6 shadow-sm">
-                <h2 className="text-xl font-bold text-[#166534] mb-4">Location</h2>
-                <div className="h-80 rounded-lg overflow-hidden">
-                  <MapContainer
-                    center={[property.latitude, property.longitude]}
-                    zoom={15}
-                    style={{ height: "100%", width: "100%" }}
+        {/* Features */}
+        {property.features?.length > 0 && (
+          <Reveal>
+            <div className="bg-white rounded-2xl p-8 shadow-sm border border-gray-100">
+              <p className="text-[#22c55e] text-xs font-semibold uppercase tracking-widest mb-2">Inclusions</p>
+              <h2 className="text-xl font-bold text-[#166534] mb-5">Features & Amenities</h2>
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-1">
+                {property.features.map((feature, idx) => (
+                  <div key={idx} className="feat-item" style={{ transitionDelay: `${idx * 30}ms` }}>
+                    <div className="w-5 h-5 bg-[#22c55e] rounded-full flex items-center justify-center flex-shrink-0">
+                      <Check className="w-3 h-3 text-white" />
+                    </div>
+                    <span className="text-gray-600 text-sm">{feature}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </Reveal>
+        )}
+
+        {/* Floor Plans */}
+        {property.floor_plans && (
+          <Reveal>
+            <div className="bg-white rounded-2xl p-8 shadow-sm border border-gray-100">
+              <p className="text-[#22c55e] text-xs font-semibold uppercase tracking-widest mb-2">Layout</p>
+              <h2 className="text-xl font-bold text-[#166534] mb-5">Floor Plans</h2>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                {property.floor_plans.groundFloor && (
+                  <div
+                    className="floor-card cursor-pointer group"
+                    onClick={() => { setSelectedFloorPlan(property.floor_plans.groundFloor); setShowFloorPlan(true); }}
                   >
-                    <TileLayer
-                      url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                      attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-                    />
-                    <Marker position={[property.latitude, property.longitude]}>
-                      <Popup>{property.title}</Popup>
-                    </Marker>
-                  </MapContainer>
-                </div>
-              </div>
-            )}
-          </div>
-
-          {/* Sidebar - Inquiry Form */}
-          <div className="lg:col-span-1">
-            <div className="bg-white rounded-xl p-6 shadow-sm sticky top-28">
-              <h2 className="text-xl font-bold text-[#166534] mb-4">Interested in this property?</h2>
-              <p className="text-gray-600 text-sm mb-6">Fill out the form below and we'll get back to you shortly.</p>
-
-              <form onSubmit={handleInquirySubmit} className="space-y-4">
-                <Input
-                  placeholder="Your Name *"
-                  value={inquiryForm.name}
-                  onChange={(e) => setInquiryForm({ ...inquiryForm, name: e.target.value })}
-                  required
-                />
-                <Input
-                  type="email"
-                  placeholder="Your Email *"
-                  value={inquiryForm.email}
-                  onChange={(e) => setInquiryForm({ ...inquiryForm, email: e.target.value })}
-                  required
-                />
-                <Input
-                  type="tel"
-                  placeholder="Phone Number"
-                  value={inquiryForm.phone}
-                  onChange={(e) => setInquiryForm({ ...inquiryForm, phone: e.target.value })}
-                />
-                <Textarea
-                  placeholder="Your Message *"
-                  value={inquiryForm.message}
-                  onChange={(e) => setInquiryForm({ ...inquiryForm, message: e.target.value })}
-                  rows={4}
-                  required
-                />
-                <Button
-                  type="submit"
-                  className="w-full bg-[#22c55e] hover:bg-[#16a34a]"
-                  disabled={createInquiry.isPending}
-                >
-                  {createInquiry.isPending ? "Sending..." : "Send Inquiry"}
-                </Button>
-              </form>
-
-              <div className="mt-6 pt-6 border-t space-y-3">
-                <a
-                  href="tel:+63432332050"
-                  className="flex items-center gap-3 text-gray-600 hover:text-[#22c55e] transition-colors"
-                >
-                  <Phone className="w-5 h-5" />
-                  (043) 233-2050
-                </a>
-                <a
-                  href="mailto:info@vicmarhomes.com"
-                  className="flex items-center gap-3 text-gray-600 hover:text-[#22c55e] transition-colors"
-                >
-                  <Mail className="w-5 h-5" />
-                  info@vicmarhomes.com
-                </a>
+                    <div className="relative overflow-hidden rounded-xl border border-gray-200 group-hover:border-[#22c55e] transition-colors">
+                      <img
+                        src={property.floor_plans.groundFloor.image}
+                        alt="Ground Floor Plan"
+                        className="w-full h-52 object-cover group-hover:scale-105 transition-transform duration-400"
+                      />
+                      <div className="absolute inset-0 bg-black/0 group-hover:bg-black/15 transition-colors flex items-center justify-center">
+                        <Maximize className="w-7 h-7 text-white opacity-0 group-hover:opacity-100 transition-opacity" />
+                      </div>
+                    </div>
+                    <p className="mt-2.5 text-center text-sm font-semibold text-[#166534]">
+                      {property.floor_plans.groundFloor.label || "Ground Floor"}
+                    </p>
+                  </div>
+                )}
+                {property.floor_plans.secondFloor && (
+                  <div
+                    className="floor-card cursor-pointer group"
+                    onClick={() => { setSelectedFloorPlan(property.floor_plans.secondFloor); setShowFloorPlan(true); }}
+                  >
+                    <div className="relative overflow-hidden rounded-xl border border-gray-200 group-hover:border-[#22c55e] transition-colors">
+                      <img
+                        src={property.floor_plans.secondFloor.image}
+                        alt="Second Floor Plan"
+                        className="w-full h-52 object-cover group-hover:scale-105 transition-transform duration-400"
+                      />
+                      <div className="absolute inset-0 bg-black/0 group-hover:bg-black/15 transition-colors flex items-center justify-center">
+                        <Maximize className="w-7 h-7 text-white opacity-0 group-hover:opacity-100 transition-opacity" />
+                      </div>
+                    </div>
+                    <p className="mt-2.5 text-center text-sm font-semibold text-[#166534]">
+                      {property.floor_plans.secondFloor.label || "Second Floor"}
+                    </p>
+                  </div>
+                )}
               </div>
             </div>
+          </Reveal>
+        )}
+
+        {/* Map */}
+        {property.latitude && property.longitude && (
+          <Reveal>
+            <div className="bg-white rounded-2xl p-8 shadow-sm border border-gray-100">
+              <p className="text-[#22c55e] text-xs font-semibold uppercase tracking-widest mb-2">Where It Is</p>
+              <h2 className="text-xl font-bold text-[#166534] mb-5">Location</h2>
+              <div className="h-80 rounded-xl overflow-hidden border border-gray-100">
+                <MapContainer
+                  center={[property.latitude, property.longitude]}
+                  zoom={15}
+                  style={{ height: "100%", width: "100%" }}
+                >
+                  <TileLayer
+                    url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                    attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+                  />
+                  <Marker position={[property.latitude, property.longitude]}>
+                    <Popup>{property.title}</Popup>
+                  </Marker>
+                </MapContainer>
+              </div>
+            </div>
+          </Reveal>
+        )}
+      </div>
+
+      {/* ── Sticky Bottom Action Bar ── */}
+      <div className="sticky-bar fixed bottom-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-md border-t border-gray-200 shadow-2xl">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-3 flex items-center gap-4">
+          <div className="hidden md:block flex-1 min-w-0">
+            <p className="font-bold text-[#166534] truncate text-sm">{property.title}</p>
+            <p className="text-[#22c55e] font-bold text-lg leading-tight">{formatPrice(property.price)}</p>
+          </div>
+          <div className="flex items-center gap-3 ml-auto">
+            <a href="tel:+63432332050">
+              <Button
+                variant="outline"
+                className="gap-2 rounded-full border-[#166534] text-[#166534] hover:bg-[#166534]/5"
+              >
+                <Phone className="w-4 h-4" />
+                <span className="hidden sm:inline">Call Us</span>
+              </Button>
+            </a>
+            <Link to={inquireUrl}>
+              <Button className="bg-[#22c55e] hover:bg-[#16a34a] gap-2 rounded-full px-6 shadow-lg">
+                <MessageCircle className="w-4 h-4" />
+                Send Inquiry
+              </Button>
+            </Link>
           </div>
         </div>
       </div>
@@ -444,23 +443,13 @@ export default function PropertyDetail() {
             <DialogTitle>Photo Gallery</DialogTitle>
           </DialogHeader>
           <div className="relative">
-            <img
-              src={allImages[currentImageIndex]}
-              alt=""
-              className="w-full max-h-[70vh] object-contain"
-            />
+            <img src={allImages[currentImageIndex]} alt="" className="w-full max-h-[70vh] object-contain rounded-lg" />
             {allImages.length > 1 && (
               <>
-                <button
-                  onClick={prevImage}
-                  className="absolute left-2 top-1/2 -translate-y-1/2 bg-white/90 p-2 rounded-full"
-                >
+                <button onClick={prevImage} className="absolute left-2 top-1/2 -translate-y-1/2 bg-white/90 p-2 rounded-full shadow">
                   <ChevronLeft className="w-6 h-6" />
                 </button>
-                <button
-                  onClick={nextImage}
-                  className="absolute right-2 top-1/2 -translate-y-1/2 bg-white/90 p-2 rounded-full"
-                >
+                <button onClick={nextImage} className="absolute right-2 top-1/2 -translate-y-1/2 bg-white/90 p-2 rounded-full shadow">
                   <ChevronRight className="w-6 h-6" />
                 </button>
               </>
@@ -468,13 +457,7 @@ export default function PropertyDetail() {
           </div>
           <div className="flex gap-2 overflow-x-auto pt-4">
             {allImages.map((img, idx) => (
-              <button
-                key={idx}
-                onClick={() => setCurrentImageIndex(idx)}
-                className={`flex-shrink-0 w-16 h-12 rounded overflow-hidden border-2 ${
-                  idx === currentImageIndex ? "border-[#22c55e]" : "border-transparent"
-                }`}
-              >
+              <button key={idx} onClick={() => setCurrentImageIndex(idx)} className={`flex-shrink-0 w-16 h-12 rounded-lg overflow-hidden border-2 transition-all ${idx === currentImageIndex ? "border-[#22c55e]" : "border-transparent"}`}>
                 <img src={img} alt="" className="w-full h-full object-cover" />
               </button>
             ))}
@@ -486,14 +469,11 @@ export default function PropertyDetail() {
       <Dialog open={showVirtualTour} onOpenChange={setShowVirtualTour}>
         <DialogContent className="max-w-6xl w-[95vw] p-0">
           <DialogHeader className="p-4 pb-0">
-            <DialogTitle>360° Virtual Tour - {property?.title}</DialogTitle>
+            <DialogTitle>360° Virtual Tour — {property.title}</DialogTitle>
           </DialogHeader>
           <div className="w-full h-[70vh]">
-            {property?.panorama_image && (
-              <PanoramaViewer 
-                src={property.panorama_image} 
-                alt={`360° view of ${property.title}`} 
-              />
+            {property.panorama_image && (
+              <PanoramaViewer src={property.panorama_image} alt={`360° view of ${property.title}`} />
             )}
           </div>
         </DialogContent>
@@ -506,13 +486,9 @@ export default function PropertyDetail() {
             <DialogTitle>{selectedFloorPlan?.label || "Floor Plan"}</DialogTitle>
           </DialogHeader>
           <div className="overflow-auto">
-            <img
-              src={selectedFloorPlan?.image}
-              alt="Floor Plan"
-              className="w-full max-h-[70vh] object-contain"
-            />
+            <img src={selectedFloorPlan?.image} alt="Floor Plan" className="w-full max-h-[70vh] object-contain" />
           </div>
-          {property?.floor_plans && Object.keys(property.floor_plans).length > 1 && (
+          {property.floor_plans && Object.keys(property.floor_plans).length > 1 && (
             <div className="flex gap-4 pt-4 border-t">
               {property.floor_plans.groundFloor && (
                 <Button
@@ -539,3 +515,5 @@ export default function PropertyDetail() {
     </div>
   );
 }
+
+

@@ -31,7 +31,7 @@ export default function RecentListings({ properties = [], isLoading }) {
             to={createPageUrl("Listings")}
             className="hidden md:flex items-center gap-2 text-[#22c55e] hover:text-[#16a34a] font-semibold transition-colors"
           >
-            view more properties
+            View More Properties
             <ArrowRight className="w-5 h-5" />
           </Link>
         </div>
@@ -53,7 +53,7 @@ export default function RecentListings({ properties = [], isLoading }) {
             to={createPageUrl("Listings")}
             className="inline-flex items-center gap-2 text-[#22c55e] hover:text-[#16a34a] font-semibold transition-colors"
           >
-            view more properties
+            View More Properties
             <ArrowRight className="w-5 h-5" />
           </Link>
         </div>
