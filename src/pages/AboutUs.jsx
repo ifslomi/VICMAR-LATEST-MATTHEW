@@ -3,8 +3,6 @@ import { Link } from "react-router-dom";
 import MissionPhilosophySection from "@/components/about/MissionPhilosophySection";
 import CoreValuesSection from "@/components/about/CoreValuesSection";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
-import vicmarLogo from "@/images/logos/transparent-vicmar-logo.png";
-import bgHero from "@/images/hero-properties.jpg";
 
 /* ── Scroll-reveal wrapper ───────────────────────────────────────── */
 function Reveal({ children, className = "", delay = 0 }) {
@@ -23,53 +21,53 @@ function Reveal({ children, className = "", delay = 0 }) {
 /* ── TATAG Five Traits ───────────────────────────────────────────── */
 const tatagTraits = [
   {
-    label: "TAPAT",
-    sublabel: "(Honest & Transparent)",
+    label: "GARDEN SPACE",
+    sublabel: "(Backyard Food Growing)",
     icon: (
       <svg viewBox="0 0 40 40" className="w-12 h-12 mx-auto" fill="none">
-        <circle cx="20" cy="20" r="18" stroke="#16a34a" strokeWidth="2.5" />
-        <path d="M12 20l5 5 10-10" stroke="#16a34a" strokeWidth="2.8" strokeLinecap="round" strokeLinejoin="round" />
+        <path d="M20 35V20" stroke="#16a34a" strokeWidth="2.5" strokeLinecap="round" />
+        <path d="M20 20c-6-1-10-6-10-12 6 1 10 6 10 12z" stroke="#16a34a" strokeWidth="2.3" fill="none" />
+        <path d="M20 24c6-1 10-6 10-12-6 1-10 6-10 12z" stroke="#16a34a" strokeWidth="2.3" fill="none" />
+        <path d="M12 35h16" stroke="#16a34a" strokeWidth="2.3" strokeLinecap="round" />
       </svg>
     ),
   },
   {
-    label: "ALAGAAN",
-    sublabel: "(Caring & Attentive)",
+    label: "GREEN HOMES",
+    sublabel: "(Nature Friendly)",
     icon: (
       <svg viewBox="0 0 40 40" className="w-12 h-12 mx-auto" fill="none">
-        <path d="M20 34s-14-8.5-14-17a8 8 0 0116 0 8 8 0 0116 0c0 8.5-14 17-14 17z" stroke="#16a34a" strokeWidth="2.5" strokeLinejoin="round" />
+        <path d="M6 20L20 8l14 12" stroke="#16a34a" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
+        <path d="M10 20v13h20V20" stroke="#16a34a" strokeWidth="2.3" strokeLinecap="round" strokeLinejoin="round" />
+        <path d="M26 14c3-4 8-5 8-5s-1 5-5 8c-2 1.5-4 1-4 1s-.5-2 1-4z" stroke="#16a34a" strokeWidth="2" fill="none" />
       </svg>
     ),
   },
   {
-    label: "TULUNGAN",
-    sublabel: "(Helpful & Supportive)",
+    label: "GARDEN LIVING",
+    sublabel: "(Garden Centered Living)",
     icon: (
       <svg viewBox="0 0 40 40" className="w-12 h-12 mx-auto" fill="none">
-        <circle cx="14" cy="13" r="5" stroke="#16a34a" strokeWidth="2.3" />
-        <circle cx="26" cy="13" r="5" stroke="#16a34a" strokeWidth="2.3" />
-        <path d="M7 32c0-5.5 3.1-9 7-9h12c3.9 0 7 3.5 7 9" stroke="#16a34a" strokeWidth="2.3" strokeLinecap="round" />
+        <circle cx="20" cy="18" r="4" stroke="#16a34a" strokeWidth="2.3" />
+        <path d="M20 14c0-4-3-8-3-8s-3 4-3 8a6 6 0 006 0z" stroke="#16a34a" strokeWidth="2" fill="none" />
+        <path d="M20 14c0-4 3-8 3-8s3 4 3 8a6 6 0 01-6 0z" stroke="#16a34a" strokeWidth="2" fill="none" />
+        <path d="M12 22c-4 0-8 3-8 3s4 3 8 3a6 6 0 000-6z" stroke="#16a34a" strokeWidth="2" fill="none" />
+        <path d="M28 22c4 0 8 3 8 3s-4 3-8 3a6 6 0 010-6z" stroke="#16a34a" strokeWidth="2" fill="none" />
+        <path d="M20 22v14" stroke="#16a34a" strokeWidth="2.3" strokeLinecap="round" />
       </svg>
     ),
   },
   {
-    label: "ANGKOP",
-    sublabel: "(Fitting & Relevant)",
+    label: "ECO VILLAGE",
+    sublabel: "(Eco Living Community)",
     icon: (
       <svg viewBox="0 0 40 40" className="w-12 h-12 mx-auto" fill="none">
-        <rect x="8" y="8" width="10" height="10" rx="2" stroke="#16a34a" strokeWidth="2.3" />
-        <rect x="22" y="8" width="10" height="10" rx="2" stroke="#16a34a" strokeWidth="2.3" />
-        <rect x="8" y="22" width="10" height="10" rx="2" stroke="#16a34a" strokeWidth="2.3" />
-        <rect x="22" y="22" width="10" height="10" rx="2" stroke="#16a34a" strokeWidth="2.3" />
-      </svg>
-    ),
-  },
-  {
-    label: "GALING",
-    sublabel: "(Skilled & Competent)",
-    icon: (
-      <svg viewBox="0 0 40 40" className="w-12 h-12 mx-auto" fill="none">
-        <polygon points="20,5 24.5,14.5 35,16 27.5,23 29.5,34 20,29 10.5,34 12.5,23 5,16 15.5,14.5" stroke="#16a34a" strokeWidth="2.3" strokeLinejoin="round" />
+        <circle cx="20" cy="20" r="15" stroke="#16a34a" strokeWidth="2.3" />
+        <path d="M14 28V20l6-5 6 5v8" stroke="#16a34a" strokeWidth="2" strokeLinejoin="round" />
+        <path d="M10 15c2-3 5-4 5-4s-1 3-3 5" stroke="#16a34a" strokeWidth="1.8" strokeLinecap="round" fill="none" />
+        <path d="M30 15c-2-3-5-4-5-4s1 3 3 5" stroke="#16a34a" strokeWidth="1.8" strokeLinecap="round" fill="none" />
+        <path d="M20 15v-4" stroke="#16a34a" strokeWidth="1.8" strokeLinecap="round" />
+        <path d="M18 11c0 0 2-3 2-3s2 3 2 3" stroke="#16a34a" strokeWidth="1.8" strokeLinecap="round" fill="none" />
       </svg>
     ),
   },
@@ -111,7 +109,7 @@ export default function AboutUs() {
       <div
         className="relative w-full"
         style={{
-          backgroundImage: `url(${bgHero})`,
+          backgroundImage: "url('/src/images/hero-properties.jpg')",
           backgroundSize: "cover",
           backgroundPosition: "center",
           minHeight: "320px",
@@ -139,18 +137,10 @@ export default function AboutUs() {
               About Us
             </p>
             <h2 className="text-2xl md:text-3xl font-extrabold text-gray-800 mb-4 max-w-lg">
-              Weaving Filipino Values into Modern Communities
+              Vicmar Homes: Where Sustainability Meets Comfortable Living
             </h2>
-            <p className="text-gray-500 text-sm leading-relaxed max-w-lg mb-2">
-              For years, Vicmar Homes has built communities that embody Filipino
-              values and empower families to thrive. As part of our commitment,
-              we bring trusted experience to every development — shaping
-              neighborhoods that reflect integrity, compassion, and togetherness.
-            </p>
             <p className="text-gray-500 text-sm leading-relaxed max-w-lg">
-              More than homes, we create sustainable communities rooted in the
-              bayanihan spirit, where every Filipino can live with comfort,
-              convenience, and lasting pride.
+              Vicmar Homes is a sustainable and affordable housing community located in Barangay San Jose, Sico, Batangas City. The project focuses on resource efficiency and promotes sustainable living for families in the area. It also encourages home-based food gardening, allowing residents to grow their own fresh and healthy food. The housing units are designed with flexible layouts so they can easily adapt to the different needs of homeowners. With its eco-friendly concept and practical design, Vicmar Homes offers a modern and comfortable community for people who want a better way of living in Batangas City.
             </p>
           </Reveal>
           <Reveal delay={120} className="flex-shrink-0">
@@ -182,16 +172,12 @@ export default function AboutUs() {
                 style={{ background: "rgba(255,255,255,0.12)" }}
               >
                 <img
-                  src={vicmarLogo}
+                  src="/src/images/logos/transparent-vicmar-logo.png"
                   alt="Vicmar Logo"
                   className="w-16 h-16 object-contain"
                 />
               </div>
               <div className="text-white">
-                <p className="text-2xl font-extrabold tracking-wider">TATAG</p>
-                <p className="text-xs text-white/70 uppercase tracking-widest mt-1">
-                  Tapat, Alagaan, Tulungan, Angkop, Galing
-                </p>
               </div>
             </div>
           </Reveal>
@@ -201,19 +187,8 @@ export default function AboutUs() {
             <h2 className="text-2xl md:text-3xl font-extrabold uppercase tracking-wide mb-6">
               Corporate Culture
             </h2>
-            <p className="text-white/85 text-sm leading-relaxed mb-4">
-              Vicmar Homes has grown through the years by pursuing a clear vision:
-              to be the preferred homebuilder for first-time Filipino homebuyers
-              who seek to live in a nurturing, dignified community. Built on equally
-              strong commitments to customers, employees, and communities, our
-              TATAG culture brings together what we believe are the essential
-              prerequisites for sustaining our company's long-term health and growth.
-            </p>
             <p className="text-white/85 text-sm leading-relaxed">
-              One of the most important initiatives we must pursue to realize this
-              vision is redefining how we view our internal and external customers.
-              Only with the right mindset can we effectively change the way we do
-              things.
+              Vicmar Homes is built on the values of comfort, sustainability, affordability, and community. The organization promotes a culture of responsibility and innovation by developing homes that support sustainable living and efficient use of resources. Employees and partners work together to create housing solutions that are accessible and beneficial for families in Batangas City. The company also encourages teamwork, respect, and dedication in providing quality service to homeowners. Through this culture, Vicmar Homes aims to build not only houses but also a supportive and thriving community for its residents.
             </p>
           </Reveal>
         </div>
@@ -224,11 +199,11 @@ export default function AboutUs() {
         <div className="max-w-6xl mx-auto">
           <Reveal>
             <h2 className="text-2xl md:text-3xl font-extrabold text-center uppercase tracking-widest text-gray-800 mb-12">
-              The 5 of TATAG
+              Vicmar Homes: Sustainable Living Community
             </h2>
           </Reveal>
 
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-5 mb-12">
+          <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-5 mb-12">
             {tatagTraits.map((trait, idx) => (
               <Reveal key={idx} delay={idx * 80}>
                 <div className="bg-white rounded-xl p-5 text-center shadow-sm border border-gray-100 h-full flex flex-col items-center justify-center gap-3">
@@ -244,11 +219,11 @@ export default function AboutUs() {
 
           <Reveal delay={200}>
             <p className="text-center text-gray-500 text-xs leading-relaxed max-w-3xl mx-auto">
-              The Vicmar Customer Engagement Program — TATAG: Tapat, Alagaan,
-              Tulungan, Angkop, at Galing — introduces five core service traits
-              designed to embed a culture of community-centricity until it becomes
-              a way of life at Vicmar Homes. The mission of TATAG is to reshape how
-              we see, understand, and care for both our employees and homeowners.
+              Vicmar Homes in Batangas City is a designed community that promotes
+              sustainable and affordable living. Each home includes space for gardens
+              and urban farming, allowing families to grow food and herbs while
+              enjoying greener surroundings - a community that supports a healthier
+              and more connected lifestyle.
             </p>
           </Reveal>
         </div>

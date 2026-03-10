@@ -1,20 +1,27 @@
 import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { createPageUrl } from "../utils";
-import { Button } from "@/components/ui/button";
 import {
-  Trees, Dumbbell, ShieldCheck, Waves,
-  Users, Church,
+  Trophy, Home, Sprout
 } from "lucide-react";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
 
 const amenities = [
-  { icon: ShieldCheck, title: "24/7 Security",    description: "Guards and CCTV monitoring around the clock." },
-  { icon: Trees,       title: "Parks & Greenery", description: "Landscaped open spaces for relaxation." },
-  { icon: Dumbbell,    title: "Fitness Area",     description: "Outdoor stations for an active lifestyle." },
-  { icon: Waves,       title: "Swimming Pool",    description: "Community pool for leisure and exercise." },
-  { icon: Users,       title: "Clubhouse",        description: "Venue for community events and gatherings." },
-  { icon: Church,      title: "Chapel",           description: "Community chapel for spiritual gatherings." },
+  { 
+    icon: Trophy, 
+    title: "Basketball Court", 
+    description: "A basketball court offers numerous benefits, including promoting physical activity, providing a space for family and friends to bond, and enhancing basketball skills. Basketball court can also be a source of pride and enjoyment for the community, promoting a healthy and active lifestyle." 
+  },
+  { 
+    icon: Home, 
+    title: "Pavillion", 
+    description: "A pavilion offers numerous benefits, including expanded outdoor living space, enhanced property value, and a versatile area for hosting events and relaxation. It provides shelter from the elements, allowing for year-round enjoyment of the outdoors, and can be a focal point for social gatherings and community interaction." 
+  },
+  { 
+    icon: Sprout, 
+    title: "Community Garden", 
+    description: "Community gardens offer numerous benefits, including promoting healthy eating, improving mental well-being, and strengthening community bonds. They also provide fresh, locally grown food, especially valuable in food deserts, and contribute to environmental sustainability by creating green spaces and promoting biodiversity." 
+  },
 ];
 
 const galleryImages = [
@@ -93,17 +100,17 @@ export default function Amenities() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
 
         {/* Amenities Grid */}
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {amenities.map((amenity, idx) => {
             const Icon = amenity.icon;
             return (
               <Reveal key={idx} delay={idx * 60}>
-                <div className="amenity-card bg-white rounded-xl p-5 shadow-sm border border-gray-100 group h-full text-center">
-                  <div className="w-10 h-10 bg-[#16a34a]/10 group-hover:bg-[#16a34a]/20 rounded-lg flex items-center justify-center mx-auto mb-3 transition-colors">
-                    <Icon className="w-5 h-5 text-[#16a34a]" />
+                <div className="amenity-card bg-white rounded-xl p-6 shadow-sm border border-gray-100 group h-full text-center">
+                  <div className="w-14 h-14 bg-[#16a34a]/10 group-hover:bg-[#16a34a]/20 rounded-lg flex items-center justify-center mx-auto mb-4 transition-colors">
+                    <Icon className="w-7 h-7 text-[#16a34a]" />
                   </div>
-                  <h3 className="text-sm font-bold text-[#16a34a] mb-1">{amenity.title}</h3>
-                  <p className="text-gray-500 text-xs leading-snug">{amenity.description}</p>
+                  <h3 className="text-base font-bold text-[#16a34a] mb-3">{amenity.title}</h3>
+                  <p className="text-gray-600 text-sm leading-relaxed">{amenity.description}</p>
                 </div>
               </Reveal>
             );
@@ -139,9 +146,9 @@ export default function Amenities() {
                     ))}
                   </div>
                   <Link to={createPageUrl("Listings")}>
-                    <Button className="bg-[#16a34a] hover:bg-[#22c55e] w-fit rounded-full px-6">
+                    <span className="inline-flex bg-[#16a34a] hover:bg-[#22c55e] text-white w-fit rounded-full px-6 py-2 text-sm font-medium transition-colors">
                       Explore Our Properties
-                    </Button>
+                    </span>
                   </Link>
                 </div>
               </div>

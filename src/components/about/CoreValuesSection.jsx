@@ -3,24 +3,24 @@ import { useScrollReveal } from "@/hooks/useScrollReveal";
 
 const coreValues = [
   {
-    image: "https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?w=500&q=80",
-    title: "INTEGRITY",
-    subtitle: '"Do What Is Right"',
+    image: "https://images.unsplash.com/photo-1556909172-54557c7e4fb7?w=500&q=80",
+    title: "Comfort",
+    subtitle: '"A place where families can live in comfort and peace."',
   },
   {
-    image: "https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=500&q=80",
-    title: "LOVE FOR COUNTRY",
-    subtitle: '"Protect And Defend Filipino Families And Our Environment"',
+    image: "https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?w=500&q=80",
+    title: "Sustainability",
+    subtitle: '"Living responsibly while caring for the environment."',
   },
   {
-    image: "https://images.unsplash.com/photo-1600880292203-757bb62b4baf?w=500&q=80",
-    title: "PROFESSIONALISM",
-    subtitle: '"Listen And Respect To Create Better Ideas"',
+    image: "https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=500&q=80",
+    title: "Affordability",
+    subtitle: '"Quality homes designed to be within reach for every family."',
   },
   {
-    image: "https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=500&q=80",
-    title: "COMPETENCE",
-    subtitle: '"Be Better And Be a Productive Member of our Organization and Society"',
+    image: "https://images.unsplash.com/photo-1511632765486-a01980e01a18?w=500&q=80",
+    title: "Community",
+    subtitle: '"A neighborhood where people grow and thrive together."',
   },
 ];
 
@@ -49,9 +49,7 @@ export default function CoreValuesSection() {
             OUR CORE VALUES
           </h2>
           <p className="text-center text-gray-600 text-sm mb-12 max-w-2xl mx-auto">
-            At Vicmar Homes, our values aren't just words—they guide how we work,
-            how we serve, and how we care for the communities we build every single
-            day.
+            At Vicmar Homes, we grow stronger together, live with warmth and belonging, and thrive in a community that truly feels like home.
           </p>
         </Reveal>
 
