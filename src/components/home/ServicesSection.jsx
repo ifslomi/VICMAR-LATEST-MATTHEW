@@ -43,8 +43,8 @@ export default function ServicesSection() {
     <section className="py-24 bg-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <Reveal className="text-center mb-14">
-          <p className="text-[#22c55e] text-xs font-semibold uppercase tracking-widest mb-3">Why Choose Us</p>
-          <h2 className="text-3xl md:text-4xl font-bold text-[#166534] mb-3">
+          <p className="text-[#16a34a] text-xs font-semibold uppercase tracking-widest mb-3">Why Choose Us</p>
+          <h2 className="text-3xl md:text-4xl font-bold text-[#16a34a] mb-3">
             How Vicmar Homes Can Help You
           </h2>
           <p className="text-gray-500 max-w-xl mx-auto text-sm">
@@ -58,10 +58,10 @@ export default function ServicesSection() {
             return (
               <Reveal key={index} delay={index * 90}>
                 <div className="svc-card bg-gray-50 rounded-2xl p-7 border border-gray-100 h-full">
-                  <div className="w-12 h-12 bg-[#22c55e]/10 rounded-xl flex items-center justify-center mb-5 transition-colors group-hover:bg-[#22c55e]/20">
-                    <Icon className="w-6 h-6 text-[#22c55e]" />
+                  <div className="w-12 h-12 bg-[#16a34a]/10 rounded-xl flex items-center justify-center mb-5 transition-colors group-hover:bg-[#16a34a]/20">
+                    <Icon className="w-6 h-6 text-[#16a34a]" />
                   </div>
-                  <h3 className="font-bold text-[#166534] mb-2">{service.title}</h3>
+                  <h3 className="font-bold text-[#16a34a] mb-2">{service.title}</h3>
                   <p className="text-gray-500 text-sm leading-relaxed">{service.description}</p>
                 </div>
               </Reveal>

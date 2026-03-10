@@ -80,7 +80,7 @@ export default function Amenities() {
           backgroundPosition: "center",
         }}
       >
-        <div className="absolute inset-0 bg-[#166534]/85" />
+        <div className="absolute inset-0 bg-[#15803d]/90" />
         <div className="relative max-w-7xl mx-auto text-center">
           <p className="text-[#86efac] text-xs font-semibold uppercase tracking-widest mb-3">What We Offer</p>
           <h1 className="text-4xl md:text-5xl font-bold text-white mb-4">Community Amenities</h1>
@@ -99,10 +99,10 @@ export default function Amenities() {
             return (
               <Reveal key={idx} delay={idx * 60}>
                 <div className="amenity-card bg-white rounded-xl p-5 shadow-sm border border-gray-100 group h-full text-center">
-                  <div className="w-10 h-10 bg-[#22c55e]/10 group-hover:bg-[#22c55e]/20 rounded-lg flex items-center justify-center mx-auto mb-3 transition-colors">
-                    <Icon className="w-5 h-5 text-[#22c55e]" />
+                  <div className="w-10 h-10 bg-[#16a34a]/10 group-hover:bg-[#16a34a]/20 rounded-lg flex items-center justify-center mx-auto mb-3 transition-colors">
+                    <Icon className="w-5 h-5 text-[#16a34a]" />
                   </div>
-                  <h3 className="text-sm font-bold text-[#166534] mb-1">{amenity.title}</h3>
+                  <h3 className="text-sm font-bold text-[#16a34a] mb-1">{amenity.title}</h3>
                   <p className="text-gray-500 text-xs leading-snug">{amenity.description}</p>
                 </div>
               </Reveal>
@@ -124,8 +124,8 @@ export default function Amenities() {
                   }}
                 />
                 <div className="p-8 lg:p-12 flex flex-col justify-center">
-                  <p className="text-[#22c55e] text-xs font-semibold uppercase tracking-widest mb-3">Our Community</p>
-                  <h2 className="text-2xl font-bold text-[#166534] mb-6">Live the Vicmar Lifestyle</h2>
+                  <p className="text-[#16a34a] text-xs font-semibold uppercase tracking-widest mb-3">Our Community</p>
+                  <h2 className="text-2xl font-bold text-[#16a34a] mb-6">Live the Vicmar Lifestyle</h2>
                   <div className="flex flex-wrap gap-2 mb-8">
                     {[
                       "Family-oriented community",
@@ -133,13 +133,13 @@ export default function Amenities() {
                       "Well-maintained facilities",
                       "Active homeowner association",
                     ].map((item, i) => (
-                      <span key={i} className="bg-[#22c55e]/10 text-[#166534] text-xs font-medium px-3 py-1.5 rounded-full">
+                      <span key={i} className="bg-[#16a34a]/10 text-[#16a34a] text-xs font-medium px-3 py-1.5 rounded-full">
                         {item}
                       </span>
                     ))}
                   </div>
                   <Link to={createPageUrl("Listings")}>
-                    <Button className="bg-[#22c55e] hover:bg-[#16a34a] w-fit rounded-full px-6">
+                    <Button className="bg-[#16a34a] hover:bg-[#22c55e] w-fit rounded-full px-6">
                       Explore Our Properties
                     </Button>
                   </Link>
@@ -152,7 +152,7 @@ export default function Amenities() {
         {/* Community Gallery */}
         <div id="community-gallery" className="mt-20 scroll-mt-24">
           <Reveal>
-            <h2 className="text-2xl font-bold text-[#166534] mb-8 text-center">Community Gallery</h2>
+            <h2 className="text-2xl font-bold text-[#16a34a] mb-8 text-center">Community Gallery</h2>
           </Reveal>
           <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
             {galleryImages.map((img, idx) => (

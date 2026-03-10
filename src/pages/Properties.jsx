@@ -85,7 +85,7 @@ export default function Properties() {
       `}</style>
 
       {/* Header */}
-      <div className="bg-[#166534] py-20 px-4 relative overflow-hidden">
+      <div className="bg-[#15803d] py-20 px-4 relative overflow-hidden">
         <div className="absolute inset-0 opacity-5" style={{ backgroundImage: 'radial-gradient(circle at 20% 50%, white 1px, transparent 1px), radial-gradient(circle at 80% 20%, white 1px, transparent 1px)', backgroundSize: '40px 40px' }} />
         <div className="relative max-w-7xl mx-auto text-center page-header">
           <p className="text-[#86efac] text-xs font-semibold uppercase tracking-widest mb-3">What We Build</p>
@@ -121,7 +121,7 @@ export default function Properties() {
                     <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
                     <div className="absolute bottom-6 left-6">
                       <div className="flex items-center gap-3 text-white">
-                        <div className="w-11 h-11 bg-[#22c55e] rounded-full flex items-center justify-center shadow-lg">
+                        <div className="w-11 h-11 bg-[#16a34a] rounded-full flex items-center justify-center shadow-lg">
                           <Icon className="w-5 h-5" />
                         </div>
                         <div>
@@ -136,19 +136,19 @@ export default function Properties() {
                 {/* Content */}
                 <Reveal className="w-full lg:w-1/2" delay={200}>
                   <div className="space-y-5">
-                    <p className="text-[#22c55e] text-xs font-semibold uppercase tracking-widest">{item.type}</p>
-                    <h2 className="text-3xl font-bold text-[#166534]">{item.label}</h2>
+                    <p className="text-[#16a34a] text-xs font-semibold uppercase tracking-widest">{item.type}</p>
+                    <h2 className="text-3xl font-bold text-[#16a34a]">{item.label}</h2>
                     <p className="text-gray-600 leading-relaxed">{item.description}</p>
 
                     {priceRange && (
-                      <div className="bg-[#166534]/5 rounded-xl p-4 border border-[#166534]/10">
+                      <div className="bg-[#16a34a]/5 rounded-xl p-4 border border-[#16a34a]/10">
                         <p className="text-xs text-gray-500 mb-1 uppercase tracking-wide">Starting Price</p>
-                        <p className="text-2xl font-bold text-[#22c55e]">{priceRange}</p>
+                        <p className="text-2xl font-bold text-[#16a34a]">{priceRange}</p>
                       </div>
                     )}
 
                     <Link to={createPageUrl("Listings") + `?type=${item.type}`}>
-                      <Button className="bg-[#22c55e] hover:bg-[#16a34a] gap-2 rounded-full px-6 mt-2">
+                      <Button className="bg-[#16a34a] hover:bg-[#22c55e] gap-2 rounded-full px-6 mt-2">
                         View {item.label}
                         <ArrowRight className="w-4 h-4" />
                       </Button>

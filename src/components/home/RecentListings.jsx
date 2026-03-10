@@ -10,7 +10,7 @@ export default function RecentListings({ properties = [], isLoading }) {
       <section className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold text-[#166534]">Recent Listings</h2>
+            <h2 className="text-3xl md:text-4xl font-bold text-[#16a34a]">Recent Listings</h2>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {[1, 2, 3, 4, 5, 6].map((i) => (
@@ -26,10 +26,10 @@ export default function RecentListings({ properties = [], isLoading }) {
     <section className="py-20 bg-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center mb-12">
-          <h2 className="text-3xl md:text-4xl font-bold text-[#166534]">Recent Listings</h2>
+          <h2 className="text-3xl md:text-4xl font-bold text-[#16a34a]">Recent Listings</h2>
           <Link
             to={createPageUrl("Listings")}
-            className="hidden md:flex items-center gap-2 text-[#22c55e] hover:text-[#16a34a] font-semibold transition-colors"
+            className="hidden md:flex items-center gap-2 text-[#16a34a] hover:text-[#22c55e] font-semibold transition-colors"
           >
             View More Properties
             <ArrowRight className="w-5 h-5" />
@@ -51,7 +51,7 @@ export default function RecentListings({ properties = [], isLoading }) {
         <div className="mt-8 text-center md:hidden">
           <Link
             to={createPageUrl("Listings")}
-            className="inline-flex items-center gap-2 text-[#22c55e] hover:text-[#16a34a] font-semibold transition-colors"
+            className="inline-flex items-center gap-2 text-[#16a34a] hover:text-[#22c55e] font-semibold transition-colors"
           >
             View More Properties
             <ArrowRight className="w-5 h-5" />

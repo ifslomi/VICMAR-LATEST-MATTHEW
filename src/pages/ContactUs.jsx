@@ -51,7 +51,7 @@ export default function ContactUs() {
           backgroundPosition: "center",
         }}
       >
-        <div className="absolute inset-0 bg-[#166534]/85" />
+        <div className="absolute inset-0 bg-[#15803d]/90" />
         <div className="relative max-w-7xl mx-auto text-center">
           <h1 className="text-4xl md:text-5xl font-bold text-white mb-4">
             Contact Us
@@ -67,9 +67,9 @@ export default function ContactUs() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-20">
           {/* Contact Form */}
           <div className="bg-white rounded-xl p-8 shadow-sm">
-            <h3 className="text-xl font-bold text-[#166534] mb-6">Send Us a Message</h3>
+            <h3 className="text-xl font-bold text-[#16a34a] mb-6">Send Us a Message</h3>
             {propertyFromUrl && (
-              <div className="mb-5 flex items-center gap-2 bg-green-50 border border-green-200 rounded-lg px-4 py-3 text-sm text-green-800">
+              <div className="mb-5 flex items-center gap-2 bg-green-50 border border-green-200 rounded-lg px-4 py-3 text-sm text-[#16a34a]">
                 <span className="text-green-500 font-bold">✓</span>
                 Inquiring about: <span className="font-semibold">{propertyFromUrl}</span>
               </div>
@@ -118,7 +118,7 @@ export default function ContactUs() {
               />
               <Button
                 type="submit"
-                className="w-full bg-[#22c55e] hover:bg-[#16a34a]"
+                className="w-full bg-[#16a34a] hover:bg-[#22c55e]"
                 disabled={createInquiry.isPending}
               >
                 {createInquiry.isPending ? "Sending..." : "Send Message"}
@@ -130,41 +130,41 @@ export default function ContactUs() {
           <div className="space-y-8">
             <div className="space-y-6">
               <div className="flex items-start gap-4">
-                <div className="w-12 h-12 bg-[#22c55e]/10 rounded-full flex items-center justify-center flex-shrink-0">
-                  <Phone className="w-6 h-6 text-[#22c55e]" />
+                <div className="w-12 h-12 bg-[#16a34a]/10 rounded-full flex items-center justify-center flex-shrink-0">
+                  <Phone className="w-6 h-6 text-[#16a34a]" />
                 </div>
                 <div>
-                  <h4 className="font-semibold text-[#166534] mb-1">Call Us</h4>
+                  <h4 className="font-semibold text-[#16a34a] mb-1">Call Us</h4>
                   <p className="text-gray-600">(043) 233-2050</p>
                 </div>
               </div>
 
               <div className="flex items-start gap-4">
-                <div className="w-12 h-12 bg-[#22c55e]/10 rounded-full flex items-center justify-center flex-shrink-0">
-                  <MapPin className="w-6 h-6 text-[#22c55e]" />
+                <div className="w-12 h-12 bg-[#16a34a]/10 rounded-full flex items-center justify-center flex-shrink-0">
+                  <MapPin className="w-6 h-6 text-[#16a34a]" />
                 </div>
                 <div>
-                  <h4 className="font-semibold text-[#166534] mb-1">Visit Our Office</h4>
+                  <h4 className="font-semibold text-[#16a34a] mb-1">Visit Our Office</h4>
                   <p className="text-gray-600">San Jose Sico, Batangas City</p>
                 </div>
               </div>
 
               <div className="flex items-start gap-4">
-                <div className="w-12 h-12 bg-[#22c55e]/10 rounded-full flex items-center justify-center flex-shrink-0">
-                  <Mail className="w-6 h-6 text-[#22c55e]" />
+                <div className="w-12 h-12 bg-[#16a34a]/10 rounded-full flex items-center justify-center flex-shrink-0">
+                  <Mail className="w-6 h-6 text-[#16a34a]" />
                 </div>
                 <div>
-                  <h4 className="font-semibold text-[#166534] mb-1">Email Us</h4>
+                  <h4 className="font-semibold text-[#16a34a] mb-1">Email Us</h4>
                   <p className="text-gray-600">info@vicmarhomes.com</p>
                 </div>
               </div>
 
               <div className="flex items-start gap-4">
-                <div className="w-12 h-12 bg-[#22c55e]/10 rounded-full flex items-center justify-center flex-shrink-0">
-                  <Clock className="w-6 h-6 text-[#22c55e]" />
+                <div className="w-12 h-12 bg-[#16a34a]/10 rounded-full flex items-center justify-center flex-shrink-0">
+                  <Clock className="w-6 h-6 text-[#16a34a]" />
                 </div>
                 <div>
-                  <h4 className="font-semibold text-[#166534] mb-1">Office Hours</h4>
+                  <h4 className="font-semibold text-[#16a34a] mb-1">Office Hours</h4>
                   <p className="text-gray-600">Monday - Friday: 9:00 AM - 5:00 PM</p>
                   <p className="text-gray-600">Saturday: 9:00 AM - 1:00 PM</p>
                 </div>
@@ -172,6 +172,7 @@ export default function ContactUs() {
             </div>
           </div>
         </div>
+
       </div>
     </div>
   );

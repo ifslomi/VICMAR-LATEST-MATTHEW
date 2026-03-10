@@ -30,6 +30,7 @@ export default function Layout({ children, currentPageName }) {
   const [faqOpen, setFaqOpen] = useState(false);
   const [openFaqIdx, setOpenFaqIdx] = useState(null);
   const faqPanelRef = useRef(null);
+  const faqBtnRef = useRef(null);
 
   useEffect(() => {
     const onScroll = () => setShowScrollTop(window.scrollY > 300);
@@ -39,7 +40,10 @@ export default function Layout({ children, currentPageName }) {
 
   useEffect(() => {
     const handleClickOutside = (e) => {
-      if (faqPanelRef.current && !faqPanelRef.current.contains(e.target)) {
+      if (
+        faqPanelRef.current && !faqPanelRef.current.contains(e.target) &&
+        faqBtnRef.current && !faqBtnRef.current.contains(e.target)
+      ) {
         setFaqOpen(false);
       }
     };
@@ -58,11 +62,9 @@ export default function Layout({ children, currentPageName }) {
   ];
 
   const aboutDropdownLinks = [
-    { name: "Our Vision", to: createPageUrl("AboutUs") + "#vision" },
-    { name: "Our Values", to: createPageUrl("AboutUs") + "#values" },
-    { name: "Our Sustainable Community", to: createPageUrl("AboutUs") + "#sustainable-community" },
-    { name: "Sustainable Living Features", to: createPageUrl("AboutUs") + "#sustainable-living" },
-    { name: "Customizable Home Gardens", to: createPageUrl("AboutUs") + "#home-gardens" },
+    { name: "Mission & Philosophy", to: createPageUrl("AboutUs") + "#mission" },
+    { name: "Core Values", to: createPageUrl("AboutUs") + "#core-values" },
+    { name: "Corporate Culture", to: createPageUrl("AboutUs") + "#corporate-culture" },
   ];
 
   const amenitiesDropdownLinks = [
@@ -84,7 +86,9 @@ export default function Layout({ children, currentPageName }) {
       e.preventDefault();
       const element = document.getElementById(targetHash);
       if (element) {
-        element.scrollIntoView({ behavior: "smooth", block: "start" });
+        const navHeight = document.querySelector("nav")?.offsetHeight ?? 80;
+        const top = element.getBoundingClientRect().top + window.scrollY - navHeight - 8;
+        window.scrollTo({ top, behavior: "smooth" });
       }
     }
     // Otherwise, let React Router navigate normally and the hash will be handled by the target page
@@ -94,9 +98,9 @@ export default function Layout({ children, currentPageName }) {
     <div className="min-h-screen flex flex-col">
       <style>{`
         :root {
-          --primary-green: #166534;
-          --primary-light-green: #22c55e;
-          --primary-light-green-hover: #16a34a;
+          --primary-green: #16a34a;
+          --primary-light-green: #16a34a;
+          --primary-light-green-hover: #22c55e;
         }
 
         .nav-link {
@@ -118,7 +122,7 @@ export default function Layout({ children, currentPageName }) {
           left: 1rem;
           right: 1rem;
           height: 2px;
-          background-color: #166534;
+          background-color: #16a34a;
           transform: scaleX(0);
           transform-origin: left;
           transition: transform 0.3s ease;
@@ -126,7 +130,7 @@ export default function Layout({ children, currentPageName }) {
 
         .nav-link:hover {
           transform: translateY(-2px);
-          color: #166534;
+          color: #16a34a;
         }
 
         .nav-link:hover::after {
@@ -134,7 +138,7 @@ export default function Layout({ children, currentPageName }) {
         }
 
         .nav-link.active {
-          background-color: #166534;
+          background-color: #16a34a;
           color: white;
         }
 
@@ -144,10 +148,10 @@ export default function Layout({ children, currentPageName }) {
 
         @keyframes pulse-border {
           0%, 100% {
-            box-shadow: 0 0 0 0 rgba(22, 101, 52, 0.7);
+            box-shadow: 0 0 0 0 rgba(22, 163, 74, 0.7);
           }
           50% {
-            box-shadow: 0 0 0 4px rgba(22, 101, 52, 0);
+            box-shadow: 0 0 0 4px rgba(22, 163, 74, 0);
           }
         }
 
@@ -179,7 +183,7 @@ export default function Layout({ children, currentPageName }) {
       `}</style>
 
       {/* Top Bar */}
-      <div className="bg-[#166534] text-white py-2 px-4 text-sm hidden md:block">
+      <div className="bg-[#15803d] text-white py-2 px-4 text-sm hidden md:block">
         <div className="max-w-7xl mx-auto flex justify-between items-center">
           <div className="flex items-center gap-6">
             <a href="tel:+63432332050" className="flex items-center gap-2 hover:text-[#86efac] transition-colors">
@@ -235,7 +239,7 @@ export default function Layout({ children, currentPageName }) {
                               key={item.name}
                               to={item.to}
                               onClick={(e) => hash && handleDropdownClick(e, hash, link.page)}
-                              className="block px-4 py-2 text-sm text-gray-700 hover:bg-green-50 hover:text-[#166534] hover:pl-5 first:rounded-t-md last:rounded-b-md transition-all duration-150 ease-in-out"
+                              className="block px-4 py-2 text-sm text-gray-700 hover:bg-green-50 hover:text-[#16a34a] hover:pl-5 first:rounded-t-md last:rounded-b-md transition-all duration-150 ease-in-out"
                               style={{ transitionDelay: `${index * 30}ms` }}
                             >
                               {item.name}
@@ -263,13 +267,13 @@ export default function Layout({ children, currentPageName }) {
             <div className="hidden md:flex items-center gap-3">
               <Link
                 to={createPageUrl("Listings")}
-                className="find-property-btn border border-[#166534] text-[#166534] hover:bg-green-50 px-6 py-2.5 rounded-full text-sm font-semibold"
+                className="find-property-btn border border-[#16a34a] text-[#16a34a] hover:bg-green-50 px-6 py-2.5 rounded-full text-sm font-semibold"
               >
                 FIND PROPERTY
               </Link>
               <Link
                 to={createPageUrl("ContactUs")}
-                className="find-property-btn bg-[#22c55e] hover:bg-[#16a34a] text-white px-6 py-2.5 rounded-full text-sm font-semibold"
+                className="find-property-btn bg-[#16a34a] hover:bg-[#22c55e] text-white px-6 py-2.5 rounded-full text-sm font-semibold"
               >
                 CONTACT US
               </Link>
@@ -296,7 +300,7 @@ export default function Layout({ children, currentPageName }) {
                   onClick={() => setMobileMenuOpen(false)}
                   className={`block px-4 py-3 rounded-md text-sm font-medium transition-all ${
                     currentPageName === link.page
-                      ? "bg-[#166534] text-white"
+                      ? "bg-[#16a34a] text-white"
                       : "text-gray-700 hover:bg-green-50 hover:translate-x-1"
                   }`}
                 >
@@ -306,14 +310,14 @@ export default function Layout({ children, currentPageName }) {
               <Link
                 to={createPageUrl("Listings")}
                 onClick={() => setMobileMenuOpen(false)}
-                className="find-property-btn block border border-[#166534] text-[#166534] hover:bg-green-50 px-4 py-3 rounded-md text-sm font-semibold text-center mt-4"
+                className="find-property-btn block border border-[#16a34a] text-[#16a34a] hover:bg-green-50 px-4 py-3 rounded-md text-sm font-semibold text-center mt-4"
               >
                 FIND PROPERTY
               </Link>
               <Link
                 to={createPageUrl("ContactUs")}
                 onClick={() => setMobileMenuOpen(false)}
-                className="find-property-btn block bg-[#22c55e] hover:bg-[#16a34a] text-white px-4 py-3 rounded-md text-sm font-semibold text-center mt-4"
+                className="find-property-btn block bg-[#16a34a] hover:bg-[#22c55e] text-white px-4 py-3 rounded-md text-sm font-semibold text-center mt-4"
               >
                 CONTACT US
               </Link>
@@ -326,30 +330,9 @@ export default function Layout({ children, currentPageName }) {
       <main className="flex-1">{children}</main>
 
       {/* Footer */}
-      <footer className="relative text-white bg-[#166534]">
+      <footer className="relative text-white bg-[#15803d]">
         {/* Top accent line */}
-        <div className="h-1 bg-gradient-to-r from-[#166534] via-[#22c55e] to-[#166534]" />
-
-        {/* Call to Action Section */}
-        <div className="border-b border-white/10 bg-[#145a2e]">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14 text-center">
-            <p className="text-xs font-semibold uppercase tracking-widest text-[#86efac] mb-3">
-              Let's Talk
-            </p>
-            <h2 className="text-3xl md:text-4xl font-bold text-white mb-3">
-              Ready to Find Your Dream Home?
-            </h2>
-            <p className="text-white/60 text-base mb-8">
-              Contact our team and let us help you find the perfect property
-            </p>
-            <Link
-              to={createPageUrl("ContactUs")}
-              className="inline-block bg-[#22c55e] hover:bg-[#16a34a] text-white px-8 py-3 rounded-full text-sm font-semibold transition-colors"
-            >
-              Contact Us Today
-            </Link>
-          </div>
-        </div>
+        <div className="h-1 bg-gradient-to-r from-[#86efac] via-[#22c55e] to-[#86efac]" />
 
         {/* Main Footer Content */}
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
@@ -362,13 +345,13 @@ export default function Layout({ children, currentPageName }) {
                 Your trusted partner in finding the perfect home. Quality living starts with Vicmar Homes.
               </p>
               <div className="flex items-center gap-3 mt-6">
-                <a href="#" className="w-9 h-9 rounded-full bg-white/10 hover:bg-[#22c55e] flex items-center justify-center transition-colors">
+                <a href="#" className="w-9 h-9 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center transition-colors">
                   <Facebook className="w-4 h-4" />
                 </a>
-                <a href="#" className="w-9 h-9 rounded-full bg-white/10 hover:bg-[#22c55e] flex items-center justify-center transition-colors">
+                <a href="#" className="w-9 h-9 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center transition-colors">
                   <Instagram className="w-4 h-4" />
                 </a>
-                <a href="#" className="w-9 h-9 rounded-full bg-white/10 hover:bg-[#22c55e] flex items-center justify-center transition-colors">
+                <a href="#" className="w-9 h-9 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center transition-colors">
                   <Youtube className="w-4 h-4" />
                 </a>
               </div>
@@ -420,7 +403,7 @@ export default function Layout({ children, currentPageName }) {
                   placeholder="Your email"
                   className="flex-1 min-w-0 px-4 py-2.5 bg-white/10 text-white placeholder-white/40 text-sm focus:outline-none rounded-l-full"
                 />
-                <button className="px-5 py-2.5 bg-[#22c55e] hover:bg-[#16a34a] text-sm font-semibold transition-colors whitespace-nowrap rounded-r-full">
+                <button className="px-5 py-2.5 bg-white text-[#16a34a] hover:bg-[#f0fdf4] text-sm font-semibold transition-colors whitespace-nowrap rounded-r-full">
                   Subscribe
                 </button>
               </div>
@@ -485,9 +468,9 @@ export default function Layout({ children, currentPageName }) {
             style={{ animation: "faqPanelIn 0.3s cubic-bezier(0.34,1.56,0.64,1)" }}
           >
             {/* Panel header */}
-            <div className="bg-[#166534] px-5 py-4 flex items-center justify-between">
+            <div className="bg-[#15803d] px-5 py-4 flex items-center justify-between">
               <div className="flex items-center gap-2">
-                <HelpCircle className="w-5 h-5 text-[#22c55e]" />
+                <HelpCircle className="w-5 h-5 text-[#86efac]" />
                 <span className="text-white font-bold text-base tracking-wide">FAQ</span>
               </div>
               <button
@@ -505,14 +488,14 @@ export default function Layout({ children, currentPageName }) {
                     className="w-full text-left py-4 flex items-center justify-between gap-3 group"
                     onClick={() => setOpenFaqIdx(openFaqIdx === idx ? null : idx)}
                   >
-                    <span className="text-sm font-semibold text-[#166534] group-hover:text-[#22c55e] transition-colors leading-snug">
+                    <span className="text-sm font-semibold text-[#16a34a] group-hover:text-[#16a34a] transition-colors leading-snug">
                       {item.question}
                     </span>
                     <span
                       className="flex-shrink-0 transition-transform duration-300"
                       style={{ transform: openFaqIdx === idx ? "rotate(180deg)" : "rotate(0deg)" }}
                     >
-                      <ChevronDownIcon className="w-4 h-4 text-[#166534]" />
+                      <ChevronDownIcon className="w-4 h-4 text-[#16a34a]" />
                     </span>
                   </button>
                   <div
@@ -529,7 +512,7 @@ export default function Layout({ children, currentPageName }) {
             </div>
             {/* Footer hint */}
             <div className="bg-gray-50 px-5 py-3 border-t border-gray-100">
-              <p className="text-xs text-gray-400 text-center">Still have questions? <Link to={createPageUrl("ContactUs")} onClick={() => setFaqOpen(false)} className="text-[#166534] font-semibold hover:underline">Contact us</Link></p>
+              <p className="text-xs text-gray-400 text-center">Still have questions? <Link to={createPageUrl("ContactUs")} onClick={() => setFaqOpen(false)} className="text-[#16a34a] font-semibold hover:underline">Contact us</Link></p>
             </div>
           </div>
         </div>
@@ -541,7 +524,7 @@ export default function Layout({ children, currentPageName }) {
         <button
           onClick={scrollToTop}
           aria-label="Scroll to top"
-          className="float-btn w-12 h-12 rounded-full bg-white border-2 border-[#166534] text-[#166534] flex items-center justify-center shadow-lg"
+          className="float-btn w-12 h-12 rounded-full bg-white border-2 border-[#16a34a] text-[#16a34a] flex items-center justify-center shadow-lg"
           style={{
             animation: showScrollTop ? "slideInRight 0.35s cubic-bezier(0.34,1.56,0.64,1) both" : undefined,
             opacity: showScrollTop ? 1 : 0,
@@ -554,10 +537,11 @@ export default function Layout({ children, currentPageName }) {
 
         {/* FAQ button */}
         <button
+          ref={faqBtnRef}
           onClick={() => { setFaqOpen((v) => !v); setOpenFaqIdx(null); }}
           aria-label="Toggle FAQ"
           className={`float-btn w-14 h-14 rounded-full flex items-center justify-center shadow-xl text-white ${
-            faqOpen ? "bg-[#16a34a]" : "bg-[#166534]"
+            faqOpen ? "bg-[#22c55e]" : "bg-[#16a34a]"
           }`}
           style={{ animation: "slideInRight 0.4s cubic-bezier(0.34,1.56,0.64,1) both" }}
         >

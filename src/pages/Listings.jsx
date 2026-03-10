@@ -74,7 +74,7 @@ export default function Listings() {
       `}</style>
 
       {/* Header */}
-      <div className="bg-[#166534] py-20 px-4 relative overflow-hidden">
+      <div className="bg-[#15803d] py-20 px-4 relative overflow-hidden">
         <div className="absolute inset-0 opacity-5" style={{ backgroundImage: 'radial-gradient(circle at 20% 50%, white 1px, transparent 1px), radial-gradient(circle at 80% 20%, white 1px, transparent 1px)', backgroundSize: '40px 40px' }} />
         <div className="relative max-w-7xl mx-auto text-center page-header">
           <p className="text-[#86efac] text-xs font-semibold uppercase tracking-widest mb-3">Browse & Discover</p>
@@ -169,7 +169,7 @@ export default function Listings() {
         {/* Results Count */}
         <div className="mb-6">
           <p className="text-gray-500 text-sm">
-            Showing <span className="font-semibold text-[#166534]">{filteredProperties.length}</span> {filteredProperties.length === 1 ? 'property' : 'properties'}
+            Showing <span className="font-semibold text-[#16a34a]">{filteredProperties.length}</span> {filteredProperties.length === 1 ? 'property' : 'properties'}
           </p>
         </div>
 

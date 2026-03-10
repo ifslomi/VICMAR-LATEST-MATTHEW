@@ -22,18 +22,18 @@ export default function IntroductionSection() {
       <div className="max-w-7xl mx-auto">
         <div className="mb-14">
           <Reveal>
-            <p className="text-[#22c55e] text-xs font-semibold uppercase tracking-widest mb-3">
+            <p className="text-[#16a34a] text-xs font-semibold uppercase tracking-widest mb-3">
               Introduction to Vicmar Homes
             </p>
           </Reveal>
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 items-start">
             <Reveal delay={100}>
-              <h3 className="text-3xl md:text-4xl font-bold text-[#166534] mb-8 leading-tight">
+              <h3 className="text-3xl md:text-4xl font-bold text-[#16a34a] mb-8 leading-tight">
                 Crafting Philippine Communities with Heart and Heritage
               </h3>
               <Link
                 to={createPageUrl("AboutUs")}
-                className="inline-block bg-[#166534] hover:bg-[#145a34] text-white font-semibold px-7 py-3 rounded-full transition-colors text-sm"
+                className="inline-block bg-[#16a34a] hover:bg-[#22c55e] text-white font-semibold px-7 py-3 rounded-full transition-colors text-sm"
               >
                 Learn More About Us
               </Link>

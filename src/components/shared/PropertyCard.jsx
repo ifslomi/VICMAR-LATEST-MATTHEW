@@ -45,7 +45,7 @@ export default function PropertyCard({ property }) {
         
         {/* Overlay on hover */}
         <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-          <button className="bg-[#22c55e] hover:bg-[#16a34a] text-white font-semibold px-6 py-3 rounded-lg transform transition-all duration-300 hover:scale-105 shadow-lg">
+          <button className="bg-[#16a34a] hover:bg-[#22c55e] text-white font-semibold px-6 py-3 rounded-lg transform transition-all duration-300 hover:scale-105 shadow-lg">
             View Property
           </button>
         </div>
@@ -65,7 +65,7 @@ export default function PropertyCard({ property }) {
 
       {/* Content */}
       <div className="p-6">
-        <h3 className="font-bold text-lg text-[#166534] mb-2 line-clamp-1 group-hover:text-[#22c55e] transition-colors">
+        <h3 className="font-bold text-lg text-[#16a34a] mb-2 line-clamp-1 group-hover:text-[#16a34a] transition-colors">
           {property.title}
         </h3>
 
@@ -83,7 +83,7 @@ export default function PropertyCard({ property }) {
         )}
 
         {/* Price */}
-        <p className="text-[#22c55e] font-bold text-xl mb-4">
+        <p className="text-[#16a34a] font-bold text-xl mb-4">
           Price: {formatPrice(property.price)}
         </p>
 

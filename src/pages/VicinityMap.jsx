@@ -12,8 +12,8 @@ const MAP_NATURAL_HEIGHT = 908;
 
 // Color mapping for property types
 const typeColors = {
-  "Duplex Premiere": { fill: "rgba(21, 128, 61, 0.35)", stroke: "#15803d", hover: "rgba(21, 128, 61, 0.55)" },
-  "Duplex Premier": { fill: "rgba(21, 128, 61, 0.35)", stroke: "#15803d", hover: "rgba(21, 128, 61, 0.55)" },
+  "Duplex Premiere": { fill: "rgba(22, 163, 74, 0.35)", stroke: "#16a34a", hover: "rgba(22, 163, 74, 0.55)" },
+  "Duplex Premier": { fill: "rgba(22, 163, 74, 0.35)", stroke: "#16a34a", hover: "rgba(22, 163, 74, 0.55)" },
   "Duplex Deluxe": { fill: "rgba(37, 99, 235, 0.35)", stroke: "#2563eb", hover: "rgba(37, 99, 235, 0.55)" },
   "Duplex Economic": { fill: "rgba(234, 179, 8, 0.35)", stroke: "#ca8a04", hover: "rgba(234, 179, 8, 0.55)" },
   "Triplex": { fill: "rgba(168, 85, 247, 0.35)", stroke: "#9333ea", hover: "rgba(168, 85, 247, 0.55)" },
@@ -225,7 +225,7 @@ export default function VicinityMap() {
   };
 
   const legendItems = [
-    { label: "Duplex Premiere", color: "#15803d" },
+    { label: "Duplex Premiere", color: "#16a34a" },
     { label: "Duplex Deluxe", color: "#2563eb" },
     { label: "Duplex Economic", color: "#ca8a04" },
     { label: "Triplex", color: "#9333ea" },
@@ -236,7 +236,7 @@ export default function VicinityMap() {
   return (
     <div ref={revealRef} className="min-h-screen bg-gray-50">
       {/* Header */}
-      <div className="bg-[#166534] py-20 px-4 relative overflow-hidden">
+      <div className="bg-[#15803d] py-20 px-4 relative overflow-hidden">
         <div className="absolute inset-0 opacity-5" style={{ backgroundImage: 'radial-gradient(circle at 20% 50%, white 1px, transparent 1px), radial-gradient(circle at 80% 20%, white 1px, transparent 1px)', backgroundSize: '40px 40px' }} />
         <div className="relative max-w-7xl mx-auto text-center page-header">
           <p className="text-[#86efac] text-xs font-semibold uppercase tracking-widest mb-3">Explore the Community</p>
@@ -252,14 +252,14 @@ export default function VicinityMap() {
         {/* Toolbar */}
         <div className="flex flex-wrap items-center justify-between gap-4 mb-4">
           <div>
-            <h2 className="text-xl font-bold text-[#166534]">Community Layout</h2>
+            <h2 className="text-xl font-bold text-[#16a34a]">Community Layout</h2>
             <p className="text-gray-500 text-sm mt-1">Hover over a lot to see details · Click to view more info · Scroll to zoom</p>
           </div>
           <Button
             variant="outline"
             size="sm"
             onClick={() => setShowLegend(!showLegend)}
-            className="map-control gap-2 border-[#166534] text-[#166534] hover:bg-[#166534]/5"
+            className="map-control gap-2 border-[#16a34a] text-[#16a34a] hover:bg-[#16a34a]/5"
           >
             <Info className="w-4 h-4" />
             {showLegend ? "Hide Legend" : "Show Legend"}
@@ -269,7 +269,7 @@ export default function VicinityMap() {
         {/* Legend */}
         {showLegend && (
           <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-5 mb-4">
-            <p className="text-xs font-semibold text-[#166534] uppercase tracking-wider mb-3">Property Types</p>
+            <p className="text-xs font-semibold text-[#16a34a] uppercase tracking-wider mb-3">Property Types</p>
             <div className="flex flex-wrap gap-x-6 gap-y-2 mb-4">
               {legendItems.map((item) => (
                 <div key={item.label} className="flex items-center gap-2">
@@ -279,7 +279,7 @@ export default function VicinityMap() {
               ))}
             </div>
             <div className="border-t border-gray-100 pt-3">
-              <p className="text-xs font-semibold text-[#166534] uppercase tracking-wider mb-2">Availability</p>
+              <p className="text-xs font-semibold text-[#16a34a] uppercase tracking-wider mb-2">Availability</p>
               <div className="flex flex-wrap gap-x-6 gap-y-2">
                 <div className="flex items-center gap-2">
                   <div className="w-2.5 h-2.5 rounded-full bg-emerald-500" />
@@ -319,19 +319,19 @@ export default function VicinityMap() {
           <div className="map-control absolute top-4 right-4 z-20 flex flex-col gap-1.5">
             <button
               onClick={handleZoomIn}
-              className="w-9 h-9 bg-white border border-gray-200 rounded-lg shadow-sm flex items-center justify-center hover:bg-[#166534] hover:text-white hover:border-[#166534] text-gray-600 transition-colors"
+              className="w-9 h-9 bg-white border border-gray-200 rounded-lg shadow-sm flex items-center justify-center hover:bg-[#16a34a] hover:text-white hover:border-[#16a34a] text-gray-600 transition-colors"
             >
               <ZoomIn className="w-4 h-4" />
             </button>
             <button
               onClick={handleZoomOut}
-              className="w-9 h-9 bg-white border border-gray-200 rounded-lg shadow-sm flex items-center justify-center hover:bg-[#166534] hover:text-white hover:border-[#166534] text-gray-600 transition-colors"
+              className="w-9 h-9 bg-white border border-gray-200 rounded-lg shadow-sm flex items-center justify-center hover:bg-[#16a34a] hover:text-white hover:border-[#16a34a] text-gray-600 transition-colors"
             >
               <ZoomOut className="w-4 h-4" />
             </button>
             <button
               onClick={handleReset}
-              className="w-9 h-9 bg-white border border-gray-200 rounded-lg shadow-sm flex items-center justify-center hover:bg-[#166534] hover:text-white hover:border-[#166534] text-gray-600 transition-colors"
+              className="w-9 h-9 bg-white border border-gray-200 rounded-lg shadow-sm flex items-center justify-center hover:bg-[#16a34a] hover:text-white hover:border-[#16a34a] text-gray-600 transition-colors"
             >
               <Maximize2 className="w-4 h-4" />
             </button>
@@ -340,7 +340,7 @@ export default function VicinityMap() {
           {/* Zoom level indicator */}
           {scale > 1 && (
             <div className="absolute top-4 left-4 z-20 bg-white border border-gray-200 rounded-lg shadow-sm px-3 py-1.5">
-              <span className="text-xs font-semibold text-[#166534]">{Math.round(scale * 100)}%</span>
+              <span className="text-xs font-semibold text-[#16a34a]">{Math.round(scale * 100)}%</span>
             </div>
           )}
 
@@ -414,12 +414,12 @@ export default function VicinityMap() {
             >
               <div className="bg-white text-gray-800 p-4 rounded-xl shadow-xl border border-gray-100 min-w-[220px] max-w-[280px]">
                 <div className="flex items-center gap-2 mb-2">
-                  <MapPin className="w-3.5 h-3.5 text-[#22c55e] flex-shrink-0" />
-                  <span className="text-xs text-[#166534] font-semibold uppercase tracking-wider">
+                  <MapPin className="w-3.5 h-3.5 text-[#16a34a] flex-shrink-0" />
+                  <span className="text-xs text-[#16a34a] font-semibold uppercase tracking-wider">
                     Block {hoveredProp.info.blockNum} · {hoveredProp.info.phase}
                   </span>
                 </div>
-                <h3 className="text-sm font-bold text-[#166534] mb-3">{hoveredProp.info.type}</h3>
+                <h3 className="text-sm font-bold text-[#16a34a] mb-3">{hoveredProp.info.type}</h3>
 
                 {(() => {
                   const units = getUnitInfo(hoveredProp.info);
@@ -461,7 +461,7 @@ export default function VicinityMap() {
             { label: "Rowhouse Units", value: allProperties.filter(p => p.info.type.toLowerCase().includes("rowhouse")).length },
           ].map((stat, idx) => (
             <div key={idx} className="bg-white rounded-xl shadow-sm border border-gray-100 p-6 text-center">
-              <p className="text-3xl font-bold text-[#166534]">{stat.value}</p>
+              <p className="text-3xl font-bold text-[#16a34a]">{stat.value}</p>
               <p className="text-gray-500 text-sm mt-1">{stat.label}</p>
             </div>
           ))}
@@ -476,7 +476,7 @@ export default function VicinityMap() {
             onClick={(e) => e.stopPropagation()}
           >
             {/* Modal Header */}
-            <div className="bg-[#166534] p-6 relative">
+            <div className="bg-[#15803d] p-6 relative">
               <button
                 onClick={() => setSelectedProp(null)}
                 className="absolute top-4 right-4 w-8 h-8 flex items-center justify-center text-white/70 hover:text-white hover:bg-white/10 rounded-full transition-colors"
@@ -484,8 +484,8 @@ export default function VicinityMap() {
                 <X className="w-4 h-4" />
               </button>
               <div className="flex items-center gap-2 mb-2">
-                <MapPin className="w-4 h-4 text-[#22c55e]" />
-                <span className="text-xs text-[#22c55e] font-semibold uppercase tracking-wider">
+                <MapPin className="w-4 h-4 text-[#16a34a]" />
+                <span className="text-xs text-[#16a34a] font-semibold uppercase tracking-wider">
                   Block {selectedProp.info.blockNum} · {selectedProp.info.phase}
                 </span>
               </div>
@@ -500,11 +500,11 @@ export default function VicinityMap() {
 
                 return (
                   <div className="space-y-3">
-                    <p className="text-xs font-semibold text-[#166534] uppercase tracking-wider mb-3">Unit Details</p>
+                    <p className="text-xs font-semibold text-[#16a34a] uppercase tracking-wider mb-3">Unit Details</p>
                     {units.map((u, i) => (
                       <div key={i} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg border border-gray-100">
                         <div>
-                          <p className="text-sm font-semibold text-[#166534]">
+                          <p className="text-sm font-semibold text-[#16a34a]">
                             {u.key ? `Unit ${u.key} — ` : ""}Lot {u.data.lotNum}
                           </p>
                           <p className="text-xs text-gray-400 mt-0.5">{u.data.lotArea} sqm</p>
@@ -534,7 +534,7 @@ export default function VicinityMap() {
                 {getListingType(selectedProp.info.type) && (
                   <Button
                     onClick={() => handleViewListing(selectedProp.info.type)}
-                    className="flex-1 bg-[#22c55e] hover:bg-[#16a34a] text-white font-semibold"
+                    className="flex-1 bg-[#16a34a] hover:bg-[#22c55e] text-white font-semibold"
                   >
                     View Listings
                   </Button>

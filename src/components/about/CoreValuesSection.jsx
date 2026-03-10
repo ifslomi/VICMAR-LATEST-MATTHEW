@@ -1,38 +1,37 @@
 import React from "react";
-import { Heart, Users, Shield, Target } from "lucide-react";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
 
 const coreValues = [
   {
-    icon: Heart,
-    title: "Integrity",
-    subtitle: "Do What Is Right",
-    description: "We uphold the highest standards of honesty and ethical conduct in all our dealings with customers, partners, and communities."
+    image: "https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?w=500&q=80",
+    title: "INTEGRITY",
+    subtitle: '"Do What Is Right"',
   },
   {
-    icon: Target,
-    title: "Community First",
-    subtitle: "Build Together",
-    description: "We prioritise community wellbeing and foster spaces where families and neighbours strengthen bonds and support one another."
+    image: "https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=500&q=80",
+    title: "LOVE FOR COUNTRY",
+    subtitle: '"Protect And Defend Filipino Families And Our Environment"',
   },
   {
-    icon: Shield,
-    title: "Excellence",
-    subtitle: "Quality Always",
-    description: "We are committed to delivering superior quality in every home we build and every service we provide to our residents."
+    image: "https://images.unsplash.com/photo-1600880292203-757bb62b4baf?w=500&q=80",
+    title: "PROFESSIONALISM",
+    subtitle: '"Listen And Respect To Create Better Ideas"',
   },
   {
-    icon: Users,
-    title: "Sustainability",
-    subtitle: "For Future Generations",
-    description: "We design and build with environmental responsibility, ensuring our communities thrive while preserving natural resources."
+    image: "https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=500&q=80",
+    title: "COMPETENCE",
+    subtitle: '"Be Better And Be a Productive Member of our Organization and Society"',
   },
 ];
 
 function Reveal({ children, delay = 0 }) {
   const ref = useScrollReveal({ threshold: 0.12, triggerOnce: true });
   return (
-    <div ref={ref} className="scroll-reveal-init" style={delay ? { transitionDelay: `${delay}ms` } : undefined}>
+    <div
+      ref={ref}
+      className="scroll-reveal-init"
+      style={delay ? { transitionDelay: `${delay}ms` } : undefined}
+    >
       {children}
     </div>
   );
@@ -40,33 +39,42 @@ function Reveal({ children, delay = 0 }) {
 
 export default function CoreValuesSection() {
   return (
-    <section className="bg-white py-20 px-4 sm:px-6 lg:px-8" id="core-values">
-      <div className="max-w-7xl mx-auto">
+    <section className="bg-gray-50 py-20 px-4 sm:px-6 lg:px-8" id="core-values">
+      <div className="max-w-6xl mx-auto">
         <Reveal>
-          <p className="text-[#22c55e] text-xs font-semibold uppercase tracking-widest mb-3 text-center">
-            What Drives Us
+          <h2
+            className="text-3xl md:text-4xl font-extrabold text-center mb-3"
+            style={{ color: "#16a34a" }}
+          >
+            OUR CORE VALUES
+          </h2>
+          <p className="text-center text-gray-600 text-sm mb-12 max-w-2xl mx-auto">
+            At Vicmar Homes, our values aren't just words—they guide how we work,
+            how we serve, and how we care for the communities we build every single
+            day.
           </p>
-          <h2 className="text-4xl font-bold text-[#166534] mb-12 text-center">Our Core Values</h2>
         </Reveal>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          {coreValues.map((value, idx) => {
-            const Icon = value.icon;
-            return (
-              <Reveal key={idx} delay={idx * 100}>
-                <div className="bg-gray-50 rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-shadow h-full">
-                  <div className="bg-[#166534] h-32 flex items-center justify-center">
-                    <Icon className="w-14 h-14 text-white" />
-                  </div>
-                  <div className="p-6">
-                    <h4 className="text-lg font-bold text-[#166534] mb-1">{value.title}</h4>
-                    <p className="text-sm text-[#22c55e] font-semibold mb-3">"{value.subtitle}"</p>
-                    <p className="text-gray-600 text-sm leading-relaxed">{value.description}</p>
-                  </div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          {coreValues.map((value, idx) => (
+            <Reveal key={idx} delay={idx * 100}>
+              <div className="bg-white rounded-xl overflow-hidden shadow-sm border border-gray-100 flex flex-col h-full">
+                <div className="h-52 overflow-hidden">
+                  <img
+                    src={value.image}
+                    alt={value.title}
+                    className="w-full h-full object-cover"
+                  />
                 </div>
-              </Reveal>
-            );
-          })}
+                <div className="p-5 text-center flex-1 flex flex-col justify-center">
+                  <h4 className="text-sm font-extrabold text-gray-800 uppercase tracking-wider mb-2">
+                    {value.title}
+                  </h4>
+                  <p className="text-xs text-gray-500 leading-relaxed">{value.subtitle}</p>
+                </div>
+              </div>
+            </Reveal>
+          ))}
         </div>
       </div>
     </section>

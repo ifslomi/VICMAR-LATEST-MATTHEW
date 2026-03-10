@@ -1,47 +1,67 @@
 import React from "react";
-import { useScrollReveal } from "@/hooks/useScrollReveal";
-
-function Reveal({ children, delay = 0 }) {
-  const ref = useScrollReveal({ threshold: 0.12, triggerOnce: true });
-  return (
-    <div ref={ref} className="scroll-reveal-init" style={delay ? { transitionDelay: `${delay}ms` } : undefined}>
-      {children}
-    </div>
-  );
-}
+import communityImg from "@/images/amenities/community_garden.jpg";
+import pavilionImg from "@/images/amenities/pavillion.jpg";
 
 export default function MissionPhilosophySection() {
   return (
-    <section className="bg-gray-50 py-20 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-7xl mx-auto">
-        <Reveal>
-          <div className="mb-12 text-center max-w-2xl mx-auto">
-            <p className="text-[#22c55e] text-xs font-semibold uppercase tracking-widest mb-3">Who We Are</p>
-            <h2 className="text-4xl md:text-5xl font-bold text-[#166534] mb-4 leading-tight">
-              Weaving Filipino Values into Modern Communities
-            </h2>
+    <section id="mission" className="w-full scroll-mt-24">
+      <div className="grid grid-cols-1 md:grid-cols-2">
+
+        {/* OUR MISSION */}
+        <div
+          className="relative flex items-center justify-start min-h-[340px]"
+          style={{ background: "#15803d" }}
+        >
+          <div className="relative z-10 p-10 md:p-14 text-white">
+            <h3 className="text-xl font-bold uppercase tracking-widest mb-5 text-white/80">
+              OUR MISSION
+            </h3>
+            <p className="text-gray-100 text-sm leading-relaxed max-w-sm">
+              Make lives better for low-to-mid-income first-time homebuyers through
+              communities that deliver dignified, comfortable, and sustainable lives
+              for every Filipino family.
+            </p>
           </div>
-        </Reveal>
-
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          <Reveal delay={80}>
-            <div id="mission" className="bg-[#166534] rounded-2xl p-8 text-white scroll-mt-24 h-full">
-              <h4 className="text-2xl font-bold mb-4">Our Mission</h4>
-              <p className="leading-relaxed text-gray-100 text-sm">
-                To design and build sustainable communities that empower Filipino families to flourish with dignity, comfort, and pride — while preserving the environment for generations to come.
-              </p>
-            </div>
-          </Reveal>
-
-          <Reveal delay={160}>
-            <div id="philosophy" className="bg-[#22c55e] rounded-2xl p-8 text-white scroll-mt-24 h-full">
-              <h4 className="text-2xl font-bold mb-4">Our Philosophy</h4>
-              <p className="leading-relaxed text-white/90 text-sm">
-                Homes are more than structures — they are where memories are made and futures are built. Every Vicmar home is designed with purpose, built with integrity, and priced to improve lives.
-              </p>
-            </div>
-          </Reveal>
         </div>
+
+        {/* Image right of Mission */}
+        <div className="min-h-[340px] overflow-hidden">
+          <img
+            src={communityImg}
+            alt="Vicmar Community Garden"
+            className="w-full h-full object-cover"
+            style={{ minHeight: "340px" }}
+          />
+        </div>
+
+        {/* Image left of Philosophy */}
+        <div className="min-h-[340px] overflow-hidden">
+          <img
+            src={pavilionImg}
+            alt="Vicmar Pavilion"
+            className="w-full h-full object-cover"
+            style={{ minHeight: "340px" }}
+          />
+        </div>
+
+        {/* OUR PHILOSOPHY */}
+        <div
+          id="philosophy"
+          className="relative flex items-center justify-start min-h-[340px]"
+          style={{ background: "#15803d" }}
+        >
+          <div className="relative z-10 p-10 md:p-14 text-white">
+            <h3 className="text-xl font-bold uppercase tracking-widest mb-5 text-white/80">
+              OUR PHILOSOPHY
+            </h3>
+            <p className="text-gray-100 text-sm leading-relaxed max-w-sm">
+              We believe that by innovatively shaping new urban communities, we can
+              expand our reach and nurture every homeowner to become a better,
+              more empowered Filipino citizen.
+            </p>
+          </div>
+        </div>
+
       </div>
     </section>
   );

@@ -64,7 +64,7 @@ export default function PropertyDetail() {
   if (isLoading) {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-4 border-[#22c55e] border-t-transparent" />
+        <div className="animate-spin rounded-full h-12 w-12 border-4 border-[#16a34a] border-t-transparent" />
       </div>
     );
   }
@@ -74,7 +74,7 @@ export default function PropertyDetail() {
       <div className="min-h-screen bg-gray-50 flex flex-col items-center justify-center gap-4">
         <h1 className="text-2xl font-bold text-gray-900">Property not found</h1>
         <Link to={createPageUrl("Listings")}>
-          <Button className="bg-[#22c55e] hover:bg-[#16a34a]">Back to Listings</Button>
+          <Button className="bg-[#16a34a] hover:bg-[#22c55e]">Back to Listings</Button>
         </Link>
       </div>
     );
@@ -139,14 +139,14 @@ export default function PropertyDetail() {
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex items-center justify-between">
           <Link
             to={createPageUrl("Listings")}
-            className="inline-flex items-center gap-2 text-gray-500 hover:text-[#166534] transition-colors text-sm font-medium"
+            className="inline-flex items-center gap-2 text-gray-500 hover:text-[#16a34a] transition-colors text-sm font-medium"
           >
             <ArrowLeft className="w-4 h-4" />
             Back to Listings
           </Link>
           <div className="flex items-center gap-2">
             <Badge className={status.className}>{status.label}</Badge>
-            <Badge variant="outline" className="text-[#166534] border-[#166534]/30">
+            <Badge variant="outline" className="text-[#16a34a] border-[#16a34a]/30">
               {typeLabels[property.property_type] || property.property_type}
             </Badge>
           </div>
@@ -224,7 +224,7 @@ export default function PropertyDetail() {
                   key={idx}
                   onClick={() => setCurrentImageIndex(idx)}
                   className={`flex-shrink-0 w-16 h-12 rounded-lg overflow-hidden border-2 transition-all ${
-                    idx === currentImageIndex ? "border-[#22c55e] opacity-100" : "border-transparent opacity-60 hover:opacity-90"
+                    idx === currentImageIndex ? "border-[#16a34a] opacity-100" : "border-transparent opacity-60 hover:opacity-90"
                   }`}
                 >
                   <img src={img} alt="" className="w-full h-full object-cover" />
@@ -244,26 +244,26 @@ export default function PropertyDetail() {
             <div className="flex flex-wrap gap-3">
               {property.bedrooms && (
                 <div className="spec-pill">
-                  <Bed className="w-4 h-4 text-[#166534]" />
-                  <span className="text-sm font-semibold text-[#166534]">{property.bedrooms} Bedrooms</span>
+                  <Bed className="w-4 h-4 text-[#16a34a]" />
+                  <span className="text-sm font-semibold text-[#16a34a]">{property.bedrooms} Bedrooms</span>
                 </div>
               )}
               {property.bathrooms && (
                 <div className="spec-pill">
-                  <Bath className="w-4 h-4 text-[#166534]" />
-                  <span className="text-sm font-semibold text-[#166534]">{property.bathrooms} Bathrooms</span>
+                  <Bath className="w-4 h-4 text-[#16a34a]" />
+                  <span className="text-sm font-semibold text-[#16a34a]">{property.bathrooms} Bathrooms</span>
                 </div>
               )}
               {property.floor_area && (
                 <div className="spec-pill">
-                  <Square className="w-4 h-4 text-[#166534]" />
-                  <span className="text-sm font-semibold text-[#166534]">{property.floor_area} sqm Floor Area</span>
+                  <Square className="w-4 h-4 text-[#16a34a]" />
+                  <span className="text-sm font-semibold text-[#16a34a]">{property.floor_area} sqm Floor Area</span>
                 </div>
               )}
               {property.lot_area && (
                 <div className="spec-pill">
-                  <Square className="w-4 h-4 text-[#166534]" />
-                  <span className="text-sm font-semibold text-[#166534]">{property.lot_area} sqm Lot Area</span>
+                  <Square className="w-4 h-4 text-[#16a34a]" />
+                  <span className="text-sm font-semibold text-[#16a34a]">{property.lot_area} sqm Lot Area</span>
                 </div>
               )}
             </div>
@@ -277,7 +277,7 @@ export default function PropertyDetail() {
               {property.panorama_image && (
                 <Button
                   onClick={() => setShowVirtualTour(true)}
-                  className="bg-[#166534] hover:bg-[#166534]/90 gap-2 rounded-full px-6"
+                  className="bg-[#16a34a] hover:bg-[#16a34a]/90 gap-2 rounded-full px-6"
                 >
                   <Eye className="w-4 h-4" />
                   360° Virtual Tour
@@ -290,7 +290,7 @@ export default function PropertyDetail() {
                     if (firstPlan) { setSelectedFloorPlan(firstPlan); setShowFloorPlan(true); }
                   }}
                   variant="outline"
-                  className="gap-2 rounded-full px-6 border-[#166534] text-[#166534] hover:bg-[#166534]/5"
+                  className="gap-2 rounded-full px-6 border-[#16a34a] text-[#16a34a] hover:bg-[#16a34a]/5"
                 >
                   <FileText className="w-4 h-4" />
                   View Floor Plans
@@ -304,8 +304,8 @@ export default function PropertyDetail() {
         {property.description && (
           <Reveal>
             <div className="bg-white rounded-2xl p-8 shadow-sm border border-gray-100">
-              <p className="text-[#22c55e] text-xs font-semibold uppercase tracking-widest mb-2">About This Property</p>
-              <h2 className="text-xl font-bold text-[#166534] mb-4">Description</h2>
+              <p className="text-[#16a34a] text-xs font-semibold uppercase tracking-widest mb-2">About This Property</p>
+              <h2 className="text-xl font-bold text-[#16a34a] mb-4">Description</h2>
               <p className="text-gray-600 leading-relaxed whitespace-pre-line">{property.description}</p>
             </div>
           </Reveal>
@@ -315,12 +315,12 @@ export default function PropertyDetail() {
         {property.features?.length > 0 && (
           <Reveal>
             <div className="bg-white rounded-2xl p-8 shadow-sm border border-gray-100">
-              <p className="text-[#22c55e] text-xs font-semibold uppercase tracking-widest mb-2">Inclusions</p>
-              <h2 className="text-xl font-bold text-[#166534] mb-5">Features & Amenities</h2>
+              <p className="text-[#16a34a] text-xs font-semibold uppercase tracking-widest mb-2">Inclusions</p>
+              <h2 className="text-xl font-bold text-[#16a34a] mb-5">Features & Amenities</h2>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-1">
                 {property.features.map((feature, idx) => (
                   <div key={idx} className="feat-item" style={{ transitionDelay: `${idx * 30}ms` }}>
-                    <div className="w-5 h-5 bg-[#22c55e] rounded-full flex items-center justify-center flex-shrink-0">
+                    <div className="w-5 h-5 bg-[#16a34a] rounded-full flex items-center justify-center flex-shrink-0">
                       <Check className="w-3 h-3 text-white" />
                     </div>
                     <span className="text-gray-600 text-sm">{feature}</span>
@@ -335,15 +335,15 @@ export default function PropertyDetail() {
         {property.floor_plans && (
           <Reveal>
             <div className="bg-white rounded-2xl p-8 shadow-sm border border-gray-100">
-              <p className="text-[#22c55e] text-xs font-semibold uppercase tracking-widest mb-2">Layout</p>
-              <h2 className="text-xl font-bold text-[#166534] mb-5">Floor Plans</h2>
+              <p className="text-[#16a34a] text-xs font-semibold uppercase tracking-widest mb-2">Layout</p>
+              <h2 className="text-xl font-bold text-[#16a34a] mb-5">Floor Plans</h2>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 {property.floor_plans.groundFloor && (
                   <div
                     className="floor-card cursor-pointer group"
                     onClick={() => { setSelectedFloorPlan(property.floor_plans.groundFloor); setShowFloorPlan(true); }}
                   >
-                    <div className="relative overflow-hidden rounded-xl border border-gray-200 group-hover:border-[#22c55e] transition-colors">
+                    <div className="relative overflow-hidden rounded-xl border border-gray-200 group-hover:border-[#16a34a] transition-colors">
                       <img
                         src={property.floor_plans.groundFloor.image}
                         alt="Ground Floor Plan"
@@ -353,7 +353,7 @@ export default function PropertyDetail() {
                         <Maximize className="w-7 h-7 text-white opacity-0 group-hover:opacity-100 transition-opacity" />
                       </div>
                     </div>
-                    <p className="mt-2.5 text-center text-sm font-semibold text-[#166534]">
+                    <p className="mt-2.5 text-center text-sm font-semibold text-[#16a34a]">
                       {property.floor_plans.groundFloor.label || "Ground Floor"}
                     </p>
                   </div>
@@ -363,7 +363,7 @@ export default function PropertyDetail() {
                     className="floor-card cursor-pointer group"
                     onClick={() => { setSelectedFloorPlan(property.floor_plans.secondFloor); setShowFloorPlan(true); }}
                   >
-                    <div className="relative overflow-hidden rounded-xl border border-gray-200 group-hover:border-[#22c55e] transition-colors">
+                    <div className="relative overflow-hidden rounded-xl border border-gray-200 group-hover:border-[#16a34a] transition-colors">
                       <img
                         src={property.floor_plans.secondFloor.image}
                         alt="Second Floor Plan"
@@ -373,7 +373,7 @@ export default function PropertyDetail() {
                         <Maximize className="w-7 h-7 text-white opacity-0 group-hover:opacity-100 transition-opacity" />
                       </div>
                     </div>
-                    <p className="mt-2.5 text-center text-sm font-semibold text-[#166534]">
+                    <p className="mt-2.5 text-center text-sm font-semibold text-[#16a34a]">
                       {property.floor_plans.secondFloor.label || "Second Floor"}
                     </p>
                   </div>
@@ -387,8 +387,8 @@ export default function PropertyDetail() {
         {property.latitude && property.longitude && (
           <Reveal>
             <div className="bg-white rounded-2xl p-8 shadow-sm border border-gray-100">
-              <p className="text-[#22c55e] text-xs font-semibold uppercase tracking-widest mb-2">Where It Is</p>
-              <h2 className="text-xl font-bold text-[#166534] mb-5">Location</h2>
+              <p className="text-[#16a34a] text-xs font-semibold uppercase tracking-widest mb-2">Where It Is</p>
+              <h2 className="text-xl font-bold text-[#16a34a] mb-5">Location</h2>
               <div className="h-80 rounded-xl overflow-hidden border border-gray-100">
                 <MapContainer
                   center={[property.latitude, property.longitude]}
@@ -413,21 +413,21 @@ export default function PropertyDetail() {
       <div className="sticky-bar fixed bottom-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-md border-t border-gray-200 shadow-2xl">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-3 flex items-center gap-4">
           <div className="hidden md:block flex-1 min-w-0">
-            <p className="font-bold text-[#166534] truncate text-sm">{property.title}</p>
-            <p className="text-[#22c55e] font-bold text-lg leading-tight">{formatPrice(property.price)}</p>
+            <p className="font-bold text-[#16a34a] truncate text-sm">{property.title}</p>
+            <p className="text-[#16a34a] font-bold text-lg leading-tight">{formatPrice(property.price)}</p>
           </div>
           <div className="flex items-center gap-3 ml-auto">
             <a href="tel:+63432332050">
               <Button
                 variant="outline"
-                className="gap-2 rounded-full border-[#166534] text-[#166534] hover:bg-[#166534]/5"
+                className="gap-2 rounded-full border-[#16a34a] text-[#16a34a] hover:bg-[#16a34a]/5"
               >
                 <Phone className="w-4 h-4" />
                 <span className="hidden sm:inline">Call Us</span>
               </Button>
             </a>
             <Link to={inquireUrl}>
-              <Button className="bg-[#22c55e] hover:bg-[#16a34a] gap-2 rounded-full px-6 shadow-lg">
+              <Button className="bg-[#16a34a] hover:bg-[#22c55e] gap-2 rounded-full px-6 shadow-lg">
                 <MessageCircle className="w-4 h-4" />
                 Send Inquiry
               </Button>
@@ -457,7 +457,7 @@ export default function PropertyDetail() {
           </div>
           <div className="flex gap-2 overflow-x-auto pt-4">
             {allImages.map((img, idx) => (
-              <button key={idx} onClick={() => setCurrentImageIndex(idx)} className={`flex-shrink-0 w-16 h-12 rounded-lg overflow-hidden border-2 transition-all ${idx === currentImageIndex ? "border-[#22c55e]" : "border-transparent"}`}>
+              <button key={idx} onClick={() => setCurrentImageIndex(idx)} className={`flex-shrink-0 w-16 h-12 rounded-lg overflow-hidden border-2 transition-all ${idx === currentImageIndex ? "border-[#16a34a]" : "border-transparent"}`}>
                 <img src={img} alt="" className="w-full h-full object-cover" />
               </button>
             ))}
